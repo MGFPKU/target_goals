@@ -57,6 +57,13 @@ app_ui = ui.page_fluid(
             margin-left: auto;
             margin-right: auto;
         }
+        .nav-tabs .nav-link {
+            color: #4B7C6A !important;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #000000 !important;
+        }
         .forest-grid {
             max-width: 1400px;
             margin-left: auto;

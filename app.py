@@ -38,14 +38,89 @@ make_forest_coverage_stock_plot = _load_plot_builder(
     "Visualisation_Forest coverage rate and stock volume.py",
     "make_forest_coverage_stock_plot",
 )
+make_forest_coverage_plot = _load_plot_builder(
+    "forest_viz",
+    "Visualisation_Forest coverage rate and stock volume.py",
+    "make_forest_coverage_plot",
+)
+make_forest_stock_plot = _load_plot_builder(
+    "forest_viz",
+    "Visualisation_Forest coverage rate and stock volume.py",
+    "make_forest_stock_plot",
+)
 
 app_ui = ui.page_fluid(
+    ui.tags.style(
+        """
+        .plot-shell {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .forest-grid {
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .forest-item {
+            flex: 1 1 520px;
+            max-width: 700px;
+        }
+        @media (max-width: 768px) {
+            .forest-item {
+                flex-basis: 100%;
+                max-width: 100%;
+            }
+        }
+        """
+    ),
     ui.navset_tab(
-        ui.nav_panel("Carbon intensity", ui.output_plot("carbon_intensity_plot")),
-        ui.nav_panel("Energy intensity", ui.output_plot("energy_intensity_plot")),
-        ui.nav_panel("Energy mix shares", ui.output_plot("energy_mix_shares_plot")),
-        ui.nav_panel("Installed power generation capacity", ui.output_plot("installed_capacity_plot")),
-        ui.nav_panel("Forest stock volume", ui.output_plot("forest_stock_plot")),
+        ui.nav_panel(
+            "Carbon intensity",
+            ui.div(
+                ui.output_plot("carbon_intensity_plot", width="100%", height="460px"),
+                class_="plot-shell",
+            ),
+        ),
+        ui.nav_panel(
+            "Energy intensity",
+            ui.div(
+                ui.output_plot("energy_intensity_plot", width="100%", height="460px"),
+                class_="plot-shell",
+            ),
+        ),
+        ui.nav_panel(
+            "Energy mix shares",
+            ui.div(
+                ui.output_plot("energy_mix_shares_plot", width="100%", height="560px"),
+                class_="plot-shell",
+            ),
+        ),
+        ui.nav_panel(
+            "Installed power generation capacity",
+            ui.div(
+                ui.output_plot("installed_capacity_plot", width="100%", height="620px"),
+                class_="plot-shell",
+            ),
+        ),
+        ui.nav_panel(
+            "Forest stock volume",
+            ui.div(
+                ui.div(
+                    ui.output_plot("forest_coverage_plot", width="100%", height="430px"),
+                    class_="forest-item",
+                ),
+                ui.div(
+                    ui.output_plot("forest_stock_plot", width="100%", height="430px"),
+                    class_="forest-item",
+                ),
+                class_="forest-grid",
+            ),
+        ),
         id="tab",
     )
 )
@@ -70,7 +145,11 @@ def server(input, output, session):
 
     @render.plot(alt="Forest coverage and stock volume targets versus achieved values")
     def forest_stock_plot():
-        return make_forest_coverage_stock_plot()
+        return make_forest_stock_plot()
+
+    @render.plot(alt="Forest coverage targets versus achieved values")
+    def forest_coverage_plot():
+        return make_forest_coverage_plot()
 
 
 app = App(app_ui, server)

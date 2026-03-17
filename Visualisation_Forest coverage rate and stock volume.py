@@ -77,22 +77,13 @@ def _to_arrays(points):
     return years, values, labels
 
 
-def make_forest_coverage_stock_plot():
+def _draw_forest_coverage(axis):
     coverage_years, coverage_vals, coverage_labels = _to_arrays(COVERAGE_TARGET_POINTS)
     coverage_ach_years, coverage_ach_vals, coverage_ach_labels = _to_arrays(COVERAGE_ACHIEVED_POINTS)
-    stock_years, stock_vals, stock_labels = _to_arrays(STOCK_TARGET_POINTS)
-    stock_ach_years, stock_ach_vals, stock_ach_labels = _to_arrays(STOCK_ACHIEVED_POINTS)
 
-    fig, (ax_coverage, ax_stock) = plt.subplots(
-        1,
-        2,
-        figsize=(13.4, 6.8),
-        gridspec_kw={"wspace": 0.24},
-    )
-
-    ax_coverage.plot(coverage_years, coverage_vals, linewidth=2.1, color=TARGET_COLOR, zorder=2, label="Target")
-    ax_coverage.scatter(coverage_years, coverage_vals, s=60, facecolor="white", edgecolor=TARGET_COLOR, linewidth=1.4, zorder=3)
-    ax_coverage.plot(
+    axis.plot(coverage_years, coverage_vals, linewidth=2.1, color=TARGET_COLOR, zorder=2, label="Target")
+    axis.scatter(coverage_years, coverage_vals, s=60, facecolor="white", edgecolor=TARGET_COLOR, linewidth=1.4, zorder=3)
+    axis.plot(
         coverage_ach_years,
         coverage_ach_vals,
         linewidth=2.0,
@@ -101,7 +92,7 @@ def make_forest_coverage_stock_plot():
         zorder=2,
         label="Achieved",
     )
-    ax_coverage.scatter(
+    axis.scatter(
         coverage_ach_years,
         coverage_ach_vals,
         s=54,
@@ -111,14 +102,14 @@ def make_forest_coverage_stock_plot():
         zorder=3,
     )
 
-    ax_coverage.set_xticks(coverage_years.astype(int))
-    ax_coverage.set_xlabel("Year")
-    ax_coverage.set_ylabel("Forest coverage rate (%)")
-    ax_coverage.set_ylim(19.3, 26.7)
-    ax_coverage.set_yticks([20, 21, 22, 23, 24, 25, 26])
+    axis.set_xticks(coverage_years.astype(int))
+    axis.set_xlabel("Year")
+    axis.set_ylabel("Forest coverage rate (%)")
+    axis.set_ylim(19.3, 26.7)
+    axis.set_yticks([20, 21, 22, 23, 24, 25, 26])
 
     for x_value, y_value, label in zip(coverage_ach_years, coverage_ach_vals, coverage_ach_labels):
-        ax_coverage.annotate(
+        axis.annotate(
             label,
             (x_value, y_value),
             textcoords="offset points",
@@ -130,7 +121,7 @@ def make_forest_coverage_stock_plot():
         )
 
     for x_value, y_value, label in zip(coverage_years, coverage_vals, coverage_labels):
-        ax_coverage.annotate(
+        axis.annotate(
             label,
             (x_value, y_value),
             textcoords="offset points",
@@ -141,13 +132,18 @@ def make_forest_coverage_stock_plot():
             color=TARGET_COLOR,
         )
 
-    ax_coverage.set_title("Forest coverage rate")
-    ax_coverage.legend(frameon=False, loc="upper left")
-    _style_axis(ax_coverage)
+    axis.set_title("Forest coverage rate")
+    axis.legend(frameon=False, loc="upper left")
+    _style_axis(axis)
 
-    ax_stock.plot(stock_years, stock_vals, linewidth=2.1, color=TARGET_COLOR, zorder=2, label="Target")
-    ax_stock.scatter(stock_years, stock_vals, s=60, facecolor="white", edgecolor=TARGET_COLOR, linewidth=1.4, zorder=3)
-    ax_stock.plot(
+
+def _draw_forest_stock(axis):
+    stock_years, stock_vals, stock_labels = _to_arrays(STOCK_TARGET_POINTS)
+    stock_ach_years, stock_ach_vals, stock_ach_labels = _to_arrays(STOCK_ACHIEVED_POINTS)
+
+    axis.plot(stock_years, stock_vals, linewidth=2.1, color=TARGET_COLOR, zorder=2, label="Target")
+    axis.scatter(stock_years, stock_vals, s=60, facecolor="white", edgecolor=TARGET_COLOR, linewidth=1.4, zorder=3)
+    axis.plot(
         stock_ach_years,
         stock_ach_vals,
         linewidth=2.0,
@@ -156,7 +152,7 @@ def make_forest_coverage_stock_plot():
         zorder=2,
         label="Achieved",
     )
-    ax_stock.scatter(
+    axis.scatter(
         stock_ach_years,
         stock_ach_vals,
         s=54,
@@ -166,14 +162,14 @@ def make_forest_coverage_stock_plot():
         zorder=3,
     )
 
-    ax_stock.set_xticks(np.array([2015, 2020, 2025, 2030, 2035]))
-    ax_stock.set_xlabel("Year")
-    ax_stock.set_ylabel("Forest stock volume (billion m³)")
-    ax_stock.set_ylim(13.5, 24.8)
-    ax_stock.set_yticks([14, 16, 18, 20, 22, 24])
+    axis.set_xticks(np.array([2015, 2020, 2025, 2030, 2035]))
+    axis.set_xlabel("Year")
+    axis.set_ylabel("Forest stock volume (billion m³)")
+    axis.set_ylim(13.5, 24.8)
+    axis.set_yticks([14, 16, 18, 20, 22, 24])
 
     for x_value, y_value, label in zip(stock_ach_years, stock_ach_vals, stock_ach_labels):
-        ax_stock.annotate(
+        axis.annotate(
             label,
             (x_value, y_value),
             textcoords="offset points",
@@ -185,7 +181,7 @@ def make_forest_coverage_stock_plot():
         )
 
     for x_value, y_value, label in zip(stock_years, stock_vals, stock_labels):
-        ax_stock.annotate(
+        axis.annotate(
             label,
             (x_value, y_value),
             textcoords="offset points",
@@ -196,9 +192,32 @@ def make_forest_coverage_stock_plot():
             color=TARGET_COLOR,
         )
 
-    ax_stock.set_title("Forest stock volume")
-    ax_stock.legend(frameon=False, loc="upper left")
-    _style_axis(ax_stock)
+    axis.set_title("Forest stock volume")
+    axis.legend(frameon=False, loc="upper left")
+    _style_axis(axis)
+
+
+def make_forest_coverage_plot():
+    fig, axis = plt.subplots(1, 1, figsize=(6.6, 5.2), constrained_layout=True)
+    _draw_forest_coverage(axis)
+    return fig
+
+
+def make_forest_stock_plot():
+    fig, axis = plt.subplots(1, 1, figsize=(6.6, 5.2), constrained_layout=True)
+    _draw_forest_stock(axis)
+    return fig
+
+
+def make_forest_coverage_stock_plot():
+    fig, (ax_coverage, ax_stock) = plt.subplots(
+        1,
+        2,
+        figsize=(13.4, 6.8),
+        gridspec_kw={"wspace": 0.24},
+    )
+    _draw_forest_coverage(ax_coverage)
+    _draw_forest_stock(ax_stock)
 
     fig.tight_layout()
     return fig

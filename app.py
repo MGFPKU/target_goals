@@ -2,6 +2,7 @@ import importlib.util
 from pathlib import Path
 
 from shiny import App, render, ui
+from shinywidgets import output_widget, render_widget
 
 
 def _load_plot_builder(module_name, script_name, function_name):
@@ -89,15 +90,17 @@ app_ui = ui.page_fluid(
         ui.nav_panel(
             "Carbon intensity",
             ui.div(
-                ui.output_plot("carbon_intensity_plot", width="100%", height="460px"),
+                output_widget("carbon_intensity_plot"),
                 class_="plot-shell",
+                aria_label="Carbon intensity targets (for the whole economy)",
             ),
         ),
         ui.nav_panel(
             "Energy intensity",
             ui.div(
-                ui.output_plot("energy_intensity_plot", width="100%", height="460px"),
+                output_widget("energy_intensity_plot"),
                 class_="plot-shell",
+                aria_label="Energy intensity targets (for the whole economy)",
             ),
         ),
         ui.nav_panel(
@@ -134,11 +137,11 @@ app_ui = ui.page_fluid(
 
 
 def server(input, output, session):
-    @render.plot(alt="Carbon intensity targets (for the whole economy)")
+    @render_widget
     def carbon_intensity_plot():
         return make_carbon_intensity_plot()
 
-    @render.plot(alt="Energy intensity targets (for the whole economy)")
+    @render_widget
     def energy_intensity_plot():
         return make_energy_intensity_plot()
 

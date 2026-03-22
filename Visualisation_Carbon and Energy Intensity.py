@@ -1,16 +1,8 @@
 import math
 import re
 
-import matplotlib.patheffects as pe
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
-from matplotlib import rcParams
-from matplotlib.lines import Line2D
-from matplotlib.patches import Patch
-from matplotlib.ticker import AutoMinorLocator
-
-rcParams["font.family"] = "Times New Roman"
+import plotly.graph_objects as go
 
 COLOR_REALIZED = "#405A79"
 COLOR_TARGET = "#2F6B58"
@@ -19,64 +11,10 @@ COLOR_ABS_DIAMOND = "#6F6860"
 GRID_GRAY = "#9AA0A6"
 
 
-def dotted_line_with_endpoint(
-    ax,
-    x0,
-    y0,
-    x1,
-    y1,
-    color=COLOR_TARGET,
-    lw=1.4,
-    pattern=(0.5, 1.4),
-    ms_end=3.0,
-):
-    segment, = ax.plot(
-        [x0, x1],
-        [y0, y1],
-        linestyle=(0, pattern),
-        linewidth=lw,
-        color=color,
-        zorder=3,
-    )
-    segment.set_dash_capstyle("round")
-    ax.plot(
-        [x1],
-        [y1],
-        marker="o",
-        markersize=ms_end,
-        markerfacecolor=color,
-        markeredgecolor="white",
-        markeredgewidth=0.7,
-        zorder=4,
-    )
-    return segment
-
-
 def fmt_pct(val: float) -> str:
     if math.isclose(val, round(val), abs_tol=1e-9):
         return f"{int(round(val))}"
     return f"{val:.1f}".rstrip("0").rstrip(".")
-
-
-def apply_grid(ax):
-    ax.xaxis.set_minor_locator(AutoMinorLocator(2))
-    ax.yaxis.set_minor_locator(AutoMinorLocator(2))
-    ax.grid(
-        which="major",
-        axis="both",
-        linestyle="--",
-        linewidth=0.6,
-        color=GRID_GRAY,
-        alpha=0.45,
-    )
-    ax.grid(
-        which="minor",
-        axis="both",
-        linestyle=":",
-        linewidth=0.5,
-        color=GRID_GRAY,
-        alpha=0.25,
-    )
 
 
 def parse_pct(text: str):
@@ -186,6 +124,36 @@ def _energy_inputs():
     return abs_targets_2005, realized, pct_targets
 
 
+def _apply_layout(fig, title, xlabel, ylabel, y_values):
+    fig.update_layout(
+        font=dict(family="Times New Roman"),
+        title=dict(text=f"<b>{title}</b>", x=0, xanchor="left", font=dict(size=14)),
+        xaxis=dict(
+            range=[2005, 2031],
+            tickvals=[2005, 2010, 2015, 2020, 2025, 2030],
+            title=dict(text=xlabel),
+            showgrid=True,
+            gridcolor=GRID_GRAY,
+            gridwidth=0.6,
+            griddash="dash",
+            zeroline=False,
+        ),
+        yaxis=dict(
+            range=[min(y_values) * 0.9, max(y_values) * 1.03],
+            title=dict(text=ylabel),
+            showgrid=True,
+            gridcolor=GRID_GRAY,
+            gridwidth=0.6,
+            griddash="dash",
+            zeroline=False,
+        ),
+        legend=dict(borderwidth=0, bgcolor="rgba(0,0,0,0)"),
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        height=520,
+    )
+
+
 def make_carbon_intensity_plot():
     realized_kg, pct_targets, range_targets = _carbon_inputs()
 
@@ -194,65 +162,106 @@ def make_carbon_intensity_plot():
     series_interp = series_real.interpolate("linear")
     series_plot = series_real.dropna()
 
-    fig, ax = plt.subplots(figsize=(9.2, 5.2), constrained_layout=True)
-    ax.plot(
-        series_plot.index.to_numpy(dtype=float),
-        series_plot.to_numpy(dtype=float),
-        color=COLOR_REALIZED,
-        marker="o",
-        markersize=3.6,
-        linewidth=1.9,
-        alpha=0.9,
-    )
+    fig = go.Figure()
 
+    fig.add_trace(go.Scatter(
+        x=series_plot.index.tolist(),
+        y=series_plot.tolist(),
+        mode="lines+markers",
+        name="Realized",
+        line=dict(color=COLOR_REALIZED, width=1.9),
+        marker=dict(size=3.6, color=COLOR_REALIZED, line=dict(color="white", width=0.7)),
+        opacity=0.9,
+    ))
+
+    first_pct = True
     for baseline, target_year, pct in pct_targets:
         baseline_value = series_interp.loc[baseline]
         if pd.isna(baseline_value):
             continue
         endpoint = baseline_value * (1 - pct / 100.0)
-        dotted_line_with_endpoint(ax, baseline, baseline_value, target_year, endpoint, ms_end=3.0)
+
+        fig.add_trace(go.Scatter(
+            x=[baseline, target_year],
+            y=[baseline_value, endpoint],
+            mode="lines",
+            name="5YP target" if first_pct else None,
+            showlegend=first_pct,
+            line=dict(color=COLOR_TARGET, width=1.4, dash="dot"),
+            hoverinfo="skip",
+        ))
+        first_pct = False
+
+        fig.add_trace(go.Scatter(
+            x=[target_year],
+            y=[endpoint],
+            mode="markers",
+            showlegend=False,
+            marker=dict(size=6, color=COLOR_TARGET, line=dict(color="white", width=0.7)),
+            hoverinfo="skip",
+        ))
+
         mid_x = (baseline + target_year) / 2
         mid_y = (baseline_value + endpoint) / 2
-        label = f"-{fmt_pct(pct)}%"
-        ax.annotate(
-            label,
-            (mid_x, mid_y),
-            xytext=(0, 12),
-            textcoords="offset points",
-            ha="center",
-            va="bottom",
-            fontsize=10,
-            fontweight="bold",
-            color=COLOR_TARGET,
-            path_effects=[pe.withStroke(linewidth=2.0, foreground="white", alpha=0.9)],
+        fig.add_annotation(
+            x=mid_x,
+            y=mid_y,
+            text=f"<b>-{fmt_pct(pct)}%</b>",
+            showarrow=False,
+            yshift=12,
+            font=dict(size=10, color=COLOR_TARGET, family="Times New Roman"),
+            bgcolor="rgba(255,255,255,0.8)",
+            borderpad=1,
         )
 
+    first_range = True
     for baseline, target_year, low, high in range_targets:
         baseline_value = series_interp.loc[baseline]
         if pd.isna(baseline_value):
             continue
         endpoint_low = baseline_value * (1 - high / 100.0)
         endpoint_high = baseline_value * (1 - low / 100.0)
-        dotted_line_with_endpoint(ax, baseline, baseline_value, target_year, endpoint_low, ms_end=2.8)
-        dotted_line_with_endpoint(ax, baseline, baseline_value, target_year, endpoint_high, ms_end=2.8)
-        x_vals = np.array([baseline, target_year])
-        lower = np.array([baseline_value, min(endpoint_low, endpoint_high)])
-        upper = np.array([baseline_value, max(endpoint_low, endpoint_high)])
-        ax.fill_between(x_vals, lower, upper, color=COLOR_RANGE_FILL, alpha=0.3, zorder=2)
+
+        fig.add_trace(go.Scatter(
+            x=[baseline, target_year, target_year, baseline],
+            y=[baseline_value, endpoint_high, endpoint_low, baseline_value],
+            fill="toself",
+            fillcolor="rgba(47, 107, 88, 0.3)",
+            mode="none",
+            name="Long-term range target" if first_range else None,
+            showlegend=first_range,
+            hoverinfo="skip",
+        ))
+        first_range = False
+
+        for ep in [endpoint_low, endpoint_high]:
+            fig.add_trace(go.Scatter(
+                x=[baseline, target_year],
+                y=[baseline_value, ep],
+                mode="lines",
+                showlegend=False,
+                line=dict(color=COLOR_TARGET, width=1.4, dash="dot"),
+                hoverinfo="skip",
+            ))
+            fig.add_trace(go.Scatter(
+                x=[target_year],
+                y=[ep],
+                mode="markers",
+                showlegend=False,
+                marker=dict(size=5.6, color=COLOR_TARGET, line=dict(color="white", width=0.7)),
+                hoverinfo="skip",
+            ))
+
         mid_x = (baseline + target_year) / 2
-        mid_y = ((baseline_value + min(endpoint_low, endpoint_high)) / 2 + (baseline_value + max(endpoint_low, endpoint_high)) / 2) / 2
-        label = f"-{fmt_pct(low)}–{fmt_pct(high)}%"
-        ax.annotate(
-            label,
-            (mid_x, mid_y),
-            xytext=(0, 0),
-            textcoords="offset points",
-            ha="center",
-            va="center",
-            fontsize=10,
-            fontweight="bold",
-            color=COLOR_TARGET,
-            path_effects=[pe.withStroke(linewidth=2.0, foreground="white", alpha=0.9)],
+        mid_y = ((baseline_value + endpoint_low) / 2 + (baseline_value + endpoint_high) / 2) / 2
+        fig.add_annotation(
+            x=mid_x,
+            y=mid_y,
+            text=f"<b>-{fmt_pct(low)}–{fmt_pct(high)}%</b>",
+            showarrow=False,
+            font=dict(size=10, color=COLOR_TARGET, family="Times New Roman"),
+            bgcolor="rgba(255,255,255,0.8)",
+            borderpad=1,
         )
 
     y_values = list(series_plot.values)
@@ -263,21 +272,13 @@ def make_carbon_intensity_plot():
         baseline_value = series_interp.loc[baseline]
         y_values += [baseline_value * (1 - low / 100.0), baseline_value * (1 - high / 100.0)]
 
-    ax.set_xlim(2005, 2031)
-    ax.set_xticks([2005, 2010, 2015, 2020, 2025, 2030])
-    ax.set_ylim(min(y_values) * 0.9, max(y_values) * 1.03)
-    ax.set_xlabel("Year")
-    ax.set_ylabel("Carbon intensity (kg CO₂ per 10,000 yuan, 2005 prices)")
-    ax.set_title("Carbon intensity", loc="left", fontweight="bold")
-    apply_grid(ax)
-
-    legend_items = [
-        Line2D([0], [0], color=COLOR_REALIZED, lw=1.9, marker="o", markersize=3.8, label="Realized"),
-        Line2D([0], [0], color=COLOR_TARGET, lw=1.4, linestyle=(0, (0.5, 1.4)), label="5YP target"),
-        Patch(facecolor=COLOR_RANGE_FILL, edgecolor="none", alpha=0.3, label="Long-term range target"),
-    ]
-    ax.legend(handles=legend_items, frameon=False, loc="upper right")
-
+    _apply_layout(
+        fig,
+        title="Carbon intensity",
+        xlabel="Year",
+        ylabel="Carbon intensity (kg CO₂ per 10,000 yuan, 2005 prices)",
+        y_values=y_values,
+    )
     return fig
 
 
@@ -298,88 +299,97 @@ def make_energy_intensity_plot():
     df_pct["Implied_Target_Value_2005"] = df_pct["Baseline_Value_2005"] * (1 - df_pct["pct"] / 100.0)
     df_pct = df_pct.drop_duplicates(subset=["Baseline_Year", "Target_Year", "pct"]).reset_index(drop=True)
 
-    fig, ax = plt.subplots(figsize=(9.2, 5.2), constrained_layout=True)
-    ax.plot(
-        series_plot.index.to_numpy(dtype=float),
-        series_plot.to_numpy(dtype=float),
-        color=COLOR_REALIZED,
-        marker="o",
-        markersize=3.6,
-        linewidth=1.9,
-        alpha=0.9,
-    )
+    fig = go.Figure()
 
+    fig.add_trace(go.Scatter(
+        x=series_plot.index.tolist(),
+        y=series_plot.tolist(),
+        mode="lines+markers",
+        name="Realized",
+        line=dict(color=COLOR_REALIZED, width=1.9),
+        marker=dict(size=3.6, color=COLOR_REALIZED, line=dict(color="white", width=0.7)),
+        opacity=0.9,
+    ))
+
+    first_pct = True
     for _, row in df_pct.iterrows():
         x0 = int(row["Baseline_Year"])
         y0 = float(row["Baseline_Value_2005"])
         x1 = int(row["Target_Year"])
         y1 = float(row["Implied_Target_Value_2005"])
-        dotted_line_with_endpoint(ax, x0, y0, x1, y1, ms_end=2.8)
+
+        fig.add_trace(go.Scatter(
+            x=[x0, x1],
+            y=[y0, y1],
+            mode="lines",
+            name="Percentage targets" if first_pct else None,
+            showlegend=first_pct,
+            line=dict(color=COLOR_TARGET, width=1.4, dash="dot"),
+            hoverinfo="skip",
+        ))
+        first_pct = False
+
+        fig.add_trace(go.Scatter(
+            x=[x1],
+            y=[y1],
+            mode="markers",
+            showlegend=False,
+            marker=dict(size=5.6, color=COLOR_TARGET, line=dict(color="white", width=0.7)),
+            hoverinfo="skip",
+        ))
+
         mid_x = (x0 + x1) / 2
         mid_y = (y0 + y1) / 2
         label = f"-{fmt_pct(float(row['pct']))}%"
         if row["lower_bound"]:
             label = "≥" + label
-        ax.annotate(
-            label,
-            (mid_x, mid_y),
-            xytext=(0, 12),
-            textcoords="offset points",
-            ha="center",
-            va="bottom",
-            fontsize=10,
-            fontweight="bold",
-            color=COLOR_TARGET,
-            path_effects=[pe.withStroke(linewidth=2.0, foreground="white", alpha=0.9)],
+        fig.add_annotation(
+            x=mid_x,
+            y=mid_y,
+            text=f"<b>{label}</b>",
+            showarrow=False,
+            yshift=12,
+            font=dict(size=10, color=COLOR_TARGET, family="Times New Roman"),
+            bgcolor="rgba(255,255,255,0.8)",
+            borderpad=1,
         )
 
     abs_years = sorted(abs_targets_2005)
     abs_values = [abs_targets_2005[year] for year in abs_years]
-    ax.plot(
-        abs_years,
-        abs_values,
-        linestyle="None",
-        marker="D",
-        markersize=5.0,
-        markeredgewidth=0.8,
-        markeredgecolor="white",
-        color=COLOR_ABS_DIAMOND,
-        zorder=5,
-    )
-    for year, value in zip(abs_years, abs_values):
-        ax.annotate(
-            f"{value:.2f}",
-            xy=(year, value),
-            xytext=(0, -8),
-            textcoords="offset points",
-            ha="center",
-            va="top",
-            fontsize=9,
-            fontweight="bold",
+    fig.add_trace(go.Scatter(
+        x=abs_years,
+        y=abs_values,
+        mode="markers",
+        name="Absolute targets",
+        marker=dict(
+            symbol="diamond",
+            size=8,
             color=COLOR_ABS_DIAMOND,
+            line=dict(color="white", width=0.8),
+        ),
+    ))
+    for year, value in zip(abs_years, abs_values):
+        fig.add_annotation(
+            x=year,
+            y=value,
+            text=f"<b>{value:.2f}</b>",
+            showarrow=False,
+            yshift=-14,
+            font=dict(size=9, color=COLOR_ABS_DIAMOND, family="Times New Roman"),
         )
 
     y_values = list(series_plot.values) + abs_values + df_pct["Implied_Target_Value_2005"].tolist()
 
-    ax.set_xlim(2005, 2031)
-    ax.set_xticks([2005, 2010, 2015, 2020, 2025, 2030])
-    ax.set_ylim(min(y_values) * 0.9, max(y_values) * 1.03)
-    ax.set_xlabel("Year")
-    ax.set_ylabel("Energy intensity (tce per 10,000 yuan, 2005 prices)")
-    ax.set_title("Energy intensity", loc="left", fontweight="bold")
-    apply_grid(ax)
-
-    legend_items = [
-        Line2D([0], [0], color=COLOR_REALIZED, lw=1.9, marker="o", markersize=3.8, label="Realized"),
-        Line2D([0], [0], color=COLOR_ABS_DIAMOND, marker="D", linestyle="None", markersize=5.0, label="Absolute targets"),
-        Line2D([0], [0], color=COLOR_TARGET, lw=1.4, linestyle=(0, (0.5, 1.4)), label="Percentage targets"),
-    ]
-    ax.legend(handles=legend_items, frameon=False, loc="upper right")
-
+    _apply_layout(
+        fig,
+        title="Energy intensity",
+        xlabel="Year",
+        ylabel="Energy intensity (tce per 10,000 yuan, 2005 prices)",
+        y_values=y_values,
+    )
     return fig
 
 
 if __name__ == "__main__":
-    make_carbon_intensity_plot()
-    make_energy_intensity_plot()
-    plt.show()
+    make_carbon_intensity_plot().show()
+    make_energy_intensity_plot().show()

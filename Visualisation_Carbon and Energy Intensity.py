@@ -126,7 +126,7 @@ def _energy_inputs():
 
 def _apply_layout(fig, title, xlabel, ylabel, y_values):
     fig.update_layout(
-        font=dict(family="Times New Roman"),
+        font=dict(family="Arial"),
         title=dict(text=f"<b>{title}</b>", x=0, xanchor="left", font=dict(size=14)),
         xaxis=dict(
             range=[2005, 2031],
@@ -209,7 +209,7 @@ def make_carbon_intensity_plot():
             text=f"<b>-{fmt_pct(pct)}%</b>",
             showarrow=False,
             yshift=12,
-            font=dict(size=10, color=COLOR_TARGET, family="Times New Roman"),
+            font=dict(size=10, color=COLOR_TARGET, family="Arial"),
             bgcolor="rgba(255,255,255,0.8)",
             borderpad=1,
         )
@@ -259,7 +259,7 @@ def make_carbon_intensity_plot():
             y=mid_y,
             text=f"<b>-{fmt_pct(low)}–{fmt_pct(high)}%</b>",
             showarrow=False,
-            font=dict(size=10, color=COLOR_TARGET, family="Times New Roman"),
+            font=dict(size=10, color=COLOR_TARGET, family="Arial"),
             bgcolor="rgba(255,255,255,0.8)",
             borderpad=1,
         )
@@ -349,7 +349,7 @@ def make_energy_intensity_plot():
             text=f"<b>{label}</b>",
             showarrow=False,
             yshift=12,
-            font=dict(size=10, color=COLOR_TARGET, family="Times New Roman"),
+            font=dict(size=10, color=COLOR_TARGET, family="Arial"),
             bgcolor="rgba(255,255,255,0.8)",
             borderpad=1,
         )
@@ -375,7 +375,7 @@ def make_energy_intensity_plot():
             text=f"<b>{value:.2f}</b>",
             showarrow=False,
             yshift=-14,
-            font=dict(size=9, color=COLOR_ABS_DIAMOND, family="Times New Roman"),
+            font=dict(size=9, color=COLOR_ABS_DIAMOND, family="Arial"),
         )
 
     y_values = list(series_plot.values) + abs_values + df_pct["Implied_Target_Value_2005"].tolist()

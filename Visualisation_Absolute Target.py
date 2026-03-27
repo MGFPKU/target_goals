@@ -54,7 +54,7 @@ def make_absolute_target_plot():
         y_upper,
         color=COLOR_RANGE_FILL,
         alpha=0.3,
-        label="2035 target range (−7% to −10% from peak)",
+        label="2035 target range",
         zorder=2,
     )
 
@@ -141,7 +141,7 @@ def make_absolute_target_plot():
 
     ax.set_yticks([])
     ax.set_xlabel("Year")
-    ax.set_ylabel("Emissions level (indexed to peak = 100)")
+    ax.set_ylabel("Emissions level")
 
     ax.set_title(
         "China's first absolute carbon emissions reduction target",
@@ -159,7 +159,7 @@ def make_absolute_target_plot():
             facecolor=COLOR_RANGE_FILL,
             edgecolor="none",
             alpha=0.3,
-            label="2035 target range (−7% to −10% from peak)",
+            label="2035 target range",
         ),
     ]
     ax.legend(handles=legend_items, frameon=False, loc="upper right")

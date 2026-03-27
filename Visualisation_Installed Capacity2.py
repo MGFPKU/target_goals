@@ -187,7 +187,7 @@ def make_installed_capacity_plot():
     _draw_diff_panel(ax_diff_2020, 2020)
 
     ax_main.set_title(
-        "Installed capacity targets, realized values, and achievement gaps for major power technologies",
+        "Installed capacity targets, realized values, and\nachievement gaps for major power technologies",
         loc="left",
         fontweight="bold",
     )

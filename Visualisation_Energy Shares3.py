@@ -178,7 +178,7 @@ def make_energy_mix_shares_plot():
     ax.yaxis.set_major_locator(MultipleLocator(10))
     ax.grid(axis="y", linestyle="--", alpha=0.35)
     ax.set_ylim(0, 100)
-    ax.set_xlabel("Target Year", fontsize=14)
+    ax.set_xlabel("Target Year")
     ax.set_ylabel("Share by Source (%)", fontsize=14)
     ax.set_title("Energy Mix Targets and Realized Shares in China", loc="left", fontweight="bold")
     ax.set_xticks(x)

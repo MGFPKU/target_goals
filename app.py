@@ -13,6 +13,11 @@ def _load_plot_builder(module_name, script_name, function_name):
     return getattr(module, function_name)
 
 
+make_absolute_target_plot = _load_plot_builder(
+    "absolute_target_viz",
+    "Visualisation_Absolute Target.py",
+    "make_absolute_target_plot",
+)
 make_carbon_intensity_plot = _load_plot_builder(
     "carbon_energy_viz",
     "Visualisation_Carbon and Energy Intensity.py",
@@ -57,6 +62,16 @@ app_ui = ui.page_fluid(
         """
     ),
     ui.navset_tab(
+        ui.nav_panel(
+            "Absolute target",
+            ui.div(
+                ui.output_plot("absolute_target_plot", width="100%", height="460px"),
+                class_="plot-shell",
+            ),
+            ui.p(
+                "Data source: Authors' dataset, compiled from official Chinese policy documents and national statistics."
+            ),
+        ),
         ui.nav_panel(
             "Carbon intensity",
             ui.div(
@@ -113,6 +128,10 @@ app_ui = ui.page_fluid(
 
 
 def server(input, output, session):
+    @render.plot(alt="China's first absolute carbon emissions reduction target")
+    def absolute_target_plot():
+        return make_absolute_target_plot()
+
     @render.plot(alt="Carbon intensity targets (for the whole economy)")
     def carbon_intensity_plot():
         return make_carbon_intensity_plot()

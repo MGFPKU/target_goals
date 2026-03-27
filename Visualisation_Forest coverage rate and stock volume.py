@@ -52,8 +52,8 @@ STOCK_ACHIEVED_POINTS = [
     {"year": 2025, "value": 20.99, "label": "20.99"},
 ]
 
-TARGET_COLOR = "#1f78b4"
-ACHIEVED_COLOR = "#ff7f00"
+TARGET_COLOR = "#2F6B58"
+ACHIEVED_COLOR = "#405A79"
 
 
 def _style_axis(axis):

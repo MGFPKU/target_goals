@@ -10,8 +10,8 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.legend_handler import HandlerTuple
 from matplotlib.ticker import MultipleLocator
 
-plt.rcParams["font.family"] = "Times New Roman"
-mpl.rcParams["font.serif"] = ["Times New Roman"]
+plt.rcParams["font.family"] = "Arial"
+mpl.rcParams["font.serif"] = ["Arial"]
 
 
 TARGET_DATA = [
@@ -271,7 +271,7 @@ def make_energy_mix_shares_plot():
         handletextpad=0.8,
         loc="upper left",
         bbox_to_anchor=(0.01, 0.99),
-        prop=FontProperties(family="Times New Roman", size=9),
+        prop=FontProperties(family="Arial", size=9),
     )
 
     for text in legend.get_texts():

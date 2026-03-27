@@ -10,7 +10,7 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 from matplotlib.ticker import AutoMinorLocator
 
-rcParams["font.family"] = "Times New Roman"
+rcParams["font.family"] = "Arial"
 
 COLOR_REALIZED = "#405A79"
 COLOR_TARGET = "#2F6B58"
@@ -267,7 +267,7 @@ def make_carbon_intensity_plot():
     ax.set_xticks([2005, 2010, 2015, 2020, 2025, 2030])
     ax.set_ylim(min(y_values) * 0.9, max(y_values) * 1.03)
     ax.set_xlabel("Year")
-    ax.set_ylabel("Carbon intensity (kg CO₂ per 10,000 yuan, 2005 prices)")
+    ax.set_ylabel("Carbon intensity (kg CO$_2$ per 10,000 yuan, 2005 prices)")
     ax.set_title("Carbon intensity", loc="left", fontweight="bold")
     apply_grid(ax)
 

@@ -4,7 +4,7 @@ import numpy as np
 plt.rcParams.update(
     {
         "font.family": "serif",
-        "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
+        "font.serif": ["Arial", "Times", "DejaVu Serif"],
         "font.size": 11,
         "axes.titlesize": 14,
         "axes.labelsize": 11,

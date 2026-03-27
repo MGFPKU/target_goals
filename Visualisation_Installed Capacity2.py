@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Patch
 
-mpl.rcParams["font.family"] = "Times New Roman"
+mpl.rcParams["font.family"] = "Arial"
 
 TARGET_DATA = {
     2015: {

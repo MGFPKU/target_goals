@@ -64,7 +64,7 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
-                "Source: Authors’ compilation based on official Chinese policy documents and national statistics."
+                "Data source: Authors’ dataset, compiled from official Chinese policy documents and national statistics."
             ),
         ),
         ui.nav_panel(
@@ -74,7 +74,7 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
-                "Source: Authors’ compilation based on official Chinese policy documents and national statistics."
+                "Data source: Authors’ dataset, compiled from official Chinese policy documents and national statistics."
             ),
         ),
         ui.nav_panel(
@@ -84,7 +84,7 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
-                "Source: Authors’ compilation based on official Chinese policy documents and national statistics."
+                "Data source: Authors’ dataset, compiled from official Chinese policy documents and national statistics."
             ),
         ),
         ui.nav_panel(

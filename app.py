@@ -100,6 +100,9 @@ app_ui = ui.page_fluid(
                 ui.output_plot("forest_stock_plot", width="100%", height="430px"),
                 class_="plot-shell",
             ),
+            ui.p(
+                "Data source: Authors’ dataset, compiled from official Chinese forestry statistics and sector reports."
+            ),
         ),
         id="tab",
     ),

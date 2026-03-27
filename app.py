@@ -93,6 +93,9 @@ app_ui = ui.page_fluid(
                 ui.output_plot("installed_capacity_plot", width="100%", height="620px"),
                 class_="plot-shell",
             ),
+            ui.p(
+                "Data source: Authors’ dataset, compiled from the China National Climate Target Database and official electricity statistics from the National Energy Administration and China Electricity Council."
+            ),
         ),
         ui.nav_panel(
             "Forest stock volume",

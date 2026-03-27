@@ -63,12 +63,18 @@ app_ui = ui.page_fluid(
                 ui.output_plot("carbon_intensity_plot", width="100%", height="460px"),
                 class_="plot-shell",
             ),
+            ui.p(
+                "Data source: Authors’ dataset, compiled from official Chinese policy documents and national statistics."
+            ),
         ),
         ui.nav_panel(
             "Energy intensity",
             ui.div(
                 ui.output_plot("energy_intensity_plot", width="100%", height="460px"),
                 class_="plot-shell",
+            ),
+            ui.p(
+                "Data source: Authors’ dataset, compiled from official Chinese policy documents and national statistics."
             ),
         ),
         ui.nav_panel(
@@ -77,12 +83,18 @@ app_ui = ui.page_fluid(
                 ui.output_plot("energy_mix_shares_plot", width="100%", height="560px"),
                 class_="plot-shell",
             ),
+            ui.p(
+                "Data source: Authors’ dataset, compiled from official Chinese policy documents and national statistics."
+            ),
         ),
         ui.nav_panel(
             "Installed power generation capacity",
             ui.div(
                 ui.output_plot("installed_capacity_plot", width="100%", height="620px"),
                 class_="plot-shell",
+            ),
+            ui.p(
+                "Data source: Authors’ dataset, compiled from the China National Climate Target Database and official electricity statistics from the National Energy Administration and China Electricity Council."
             ),
         ),
         ui.nav_panel(
@@ -91,9 +103,12 @@ app_ui = ui.page_fluid(
                 ui.output_plot("forest_stock_plot", width="100%", height="430px"),
                 class_="plot-shell",
             ),
+            ui.p(
+                "Data source: Authors’ dataset, compiled from official Chinese forestry statistics and sector reports."
+            ),
         ),
         id="tab",
-    )
+    ),
 )
 
 
@@ -110,7 +125,9 @@ def server(input, output, session):
     def energy_mix_shares_plot():
         return make_energy_mix_shares_plot()
 
-    @render.plot(alt="Installed capacity targets, realized values, and achievement gaps")
+    @render.plot(
+        alt="Installed capacity targets, realized values, and achievement gaps"
+    )
     def installed_capacity_plot():
         return make_installed_capacity_plot()
 

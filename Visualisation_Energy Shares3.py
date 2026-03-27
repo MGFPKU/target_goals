@@ -56,11 +56,11 @@ ACTUAL_DATA = {
 }
 
 COLORS = {
-    "Coal (primary energy consumption)": "#1f77b4",
-    "Gas (primary energy consumption)": "#ff7f0e",
-    "Non-fossil (primary energy consumption)": "#2ca02c",
-    "Electricity share (terminal energy)": "#7b1fa2",
-    "Non-fossil (power generation, primary energy)": "#6d6d6d",
+    "Coal (primary energy consumption)": "#1a659b",
+    "Gas (primary energy consumption)": "#8E1B11",
+    "Non-fossil (primary energy consumption)": "#2A5F4A",
+    "Electricity share (terminal energy)": "#7B1FA2",
+    "Non-fossil (power generation, primary energy)": "#6D6D6D",
 }
 
 

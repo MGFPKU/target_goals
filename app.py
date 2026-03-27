@@ -33,16 +33,6 @@ make_installed_capacity_plot = _load_plot_builder(
     "Visualisation_Installed Capacity2.py",
     "make_installed_capacity_plot",
 )
-make_forest_coverage_stock_plot = _load_plot_builder(
-    "forest_viz",
-    "Visualisation_Forest coverage rate and stock volume.py",
-    "make_forest_coverage_stock_plot",
-)
-make_forest_coverage_plot = _load_plot_builder(
-    "forest_viz",
-    "Visualisation_Forest coverage rate and stock volume.py",
-    "make_forest_coverage_plot",
-)
 make_forest_stock_plot = _load_plot_builder(
     "forest_viz",
     "Visualisation_Forest coverage rate and stock volume.py",
@@ -63,25 +53,6 @@ app_ui = ui.page_fluid(
 
         .nav-tabs .nav-link.active {
             color: #000000 !important;
-        }
-        .forest-grid {
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-        }
-        .forest-item {
-            flex: 1 1 520px;
-            max-width: 700px;
-        }
-        @media (max-width: 768px) {
-            .forest-item {
-                flex-basis: 100%;
-                max-width: 100%;
-            }
         }
         """
     ),
@@ -117,15 +88,8 @@ app_ui = ui.page_fluid(
         ui.nav_panel(
             "Forest stock volume",
             ui.div(
-                ui.div(
-                    ui.output_plot("forest_coverage_plot", width="100%", height="430px"),
-                    class_="forest-item",
-                ),
-                ui.div(
-                    ui.output_plot("forest_stock_plot", width="100%", height="430px"),
-                    class_="forest-item",
-                ),
-                class_="forest-grid",
+                ui.output_plot("forest_stock_plot", width="100%", height="430px"),
+                class_="plot-shell",
             ),
         ),
         id="tab",
@@ -150,13 +114,9 @@ def server(input, output, session):
     def installed_capacity_plot():
         return make_installed_capacity_plot()
 
-    @render.plot(alt="Forest coverage and stock volume targets versus achieved values")
+    @render.plot(alt="Forest stock volume targets versus achieved values")
     def forest_stock_plot():
         return make_forest_stock_plot()
-
-    @render.plot(alt="Forest coverage targets versus achieved values")
-    def forest_coverage_plot():
-        return make_forest_coverage_plot()
 
 
 app = App(app_ui, server)

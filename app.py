@@ -83,6 +83,9 @@ app_ui = ui.page_fluid(
                 ui.output_plot("energy_mix_shares_plot", width="100%", height="560px"),
                 class_="plot-shell",
             ),
+            ui.p(
+                "Source: Authors’ compilation based on official Chinese policy documents and national statistics."
+            ),
         ),
         ui.nav_panel(
             "Installed power generation capacity",

@@ -63,12 +63,18 @@ app_ui = ui.page_fluid(
                 ui.output_plot("carbon_intensity_plot", width="100%", height="460px"),
                 class_="plot-shell",
             ),
+            ui.p(
+                "Source: Authors’ compilation based on official Chinese policy documents and national statistics."
+            ),
         ),
         ui.nav_panel(
             "Energy intensity",
             ui.div(
                 ui.output_plot("energy_intensity_plot", width="100%", height="460px"),
                 class_="plot-shell",
+            ),
+            ui.p(
+                "Source: Authors’ compilation based on official Chinese policy documents and national statistics."
             ),
         ),
         ui.nav_panel(
@@ -93,7 +99,7 @@ app_ui = ui.page_fluid(
             ),
         ),
         id="tab",
-    )
+    ),
 )
 
 
@@ -110,7 +116,9 @@ def server(input, output, session):
     def energy_mix_shares_plot():
         return make_energy_mix_shares_plot()
 
-    @render.plot(alt="Installed capacity targets, realized values, and achievement gaps")
+    @render.plot(
+        alt="Installed capacity targets, realized values, and achievement gaps"
+    )
     def installed_capacity_plot():
         return make_installed_capacity_plot()
 

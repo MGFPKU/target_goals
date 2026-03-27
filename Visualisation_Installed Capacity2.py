@@ -67,16 +67,16 @@ TARGET_ORDER = [
 ACHIEVED_ORDER = ["thermal", "nuclear", "hydro", "wind", "solar", "pumped storage"]
 
 COLOR_MAP = {
-    "coal": "#2F2F2F",
-    "gas": "#D9D9D9",
-    "thermal": "#7A7A7A",
-    "nuclear": "#6A3D9A",
-    "hydro": "#1F78B4",
-    "wind": "#33A02C",
-    "solar": "#FFD92F",
-    "wind+solar": "#9EE979",
-    "pumped storage": "#A6CEE3",
-    "new energy storage": "#66C2A5",
+    "coal": "#2F2F2F",                # charcoal
+    "gas": "#D9D9D9",                 # light gray
+    "thermal": "#7A7A7A",             # mid gray
+    "nuclear": "#8E1B11",             # logo red
+    "hydro": "#4C6F6A",               # muted blue-green, brand-adjacent
+    "wind": "#2A5F4A",                # logo green
+    "solar": "#6E8B4E",               # muted olive-green
+    "wind+solar": "#A7C8A0",          # pale green
+    "pumped storage": "#BFD3CF",      # pale teal-gray
+    "new energy storage": "#7FB7A3",  # soft green-teal
 }
 
 TARGET_POS = {2015: 0, 2020: 2, 2030: 4.2, 2035: 5.8}

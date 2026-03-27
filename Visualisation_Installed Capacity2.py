@@ -92,7 +92,7 @@ def _draw_diff_panel(axis, year):
 
     axis.bar(OVERLAP_TECH, differences, color=bar_colors, edgecolor="black", linewidth=0.8)
     axis.axhline(0, color="black", linewidth=0.8)
-    axis.set_title(f"Target achievement gap ({year})", fontsize=11)
+    axis.set_title(f"Target achievement gap ({year})", loc="left", fontweight="bold")
     axis.set_ylabel("GW")
     axis.grid(axis="y", linestyle="--", alpha=0.3)
     axis.set_xticks(range(len(OVERLAP_TECH)))
@@ -186,12 +186,12 @@ def make_installed_capacity_plot():
     _draw_diff_panel(ax_diff_2015, 2015)
     _draw_diff_panel(ax_diff_2020, 2020)
 
-    fig.suptitle(
-        "Installed capacity targets, realized values, and achievement gaps for major power technologies",
-        fontsize=15,
-        y=0.98,
+    ax_main.set_title(
+        "Installed capacity targets, realized values, and\nachievement gaps for major power technologies",
+        loc="left",
+        fontweight="bold",
     )
-    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    fig.tight_layout()
     return fig
 
 

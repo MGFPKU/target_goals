@@ -3,10 +3,8 @@ import numpy as np
 
 plt.rcParams.update(
     {
-        "font.family": "serif",
-        "font.serif": ["Arial", "Times", "DejaVu Serif"],
+        "font.family": "Arial",
         "font.size": 11,
-        "axes.titlesize": 14,
         "axes.labelsize": 11,
         "axes.titlepad": 10,
         "axes.linewidth": 0.9,
@@ -132,7 +130,7 @@ def _draw_forest_coverage(axis):
             color=TARGET_COLOR,
         )
 
-    axis.set_title("Forest coverage rate")
+    axis.set_title("Forest coverage rate", loc="left", fontweight="bold")
     axis.legend(frameon=False, loc="upper left")
     _style_axis(axis)
 
@@ -192,7 +190,7 @@ def _draw_forest_stock(axis):
             color=TARGET_COLOR,
         )
 
-    axis.set_title("Forest stock volume")
+    axis.set_title("Forest stock volume", loc="left", fontweight="bold")
     axis.legend(frameon=False, loc="upper left")
     _style_axis(axis)
 

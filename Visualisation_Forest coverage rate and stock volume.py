@@ -77,18 +77,35 @@ def _to_arrays(points):
 
 def _draw_forest_coverage(axis):
     coverage_years, coverage_vals, coverage_labels = _to_arrays(COVERAGE_TARGET_POINTS)
-    coverage_ach_years, coverage_ach_vals, coverage_ach_labels = _to_arrays(COVERAGE_ACHIEVED_POINTS)
+    coverage_ach_years, coverage_ach_vals, coverage_ach_labels = _to_arrays(
+        COVERAGE_ACHIEVED_POINTS
+    )
 
-    axis.plot(coverage_years, coverage_vals, linewidth=2.1, color=TARGET_COLOR, zorder=2, label="Target")
-    axis.scatter(coverage_years, coverage_vals, s=60, facecolor="white", edgecolor=TARGET_COLOR, linewidth=1.4, zorder=3)
+    axis.plot(
+        coverage_years,
+        coverage_vals,
+        linewidth=2.1,
+        color=TARGET_COLOR,
+        linestyle="--",
+        zorder=2,
+        label="Target",
+    )
+    axis.scatter(
+        coverage_years,
+        coverage_vals,
+        s=60,
+        facecolor="white",
+        edgecolor=TARGET_COLOR,
+        linewidth=1.4,
+        zorder=3,
+    )
     axis.plot(
         coverage_ach_years,
         coverage_ach_vals,
         linewidth=2.0,
-        linestyle="--",
         color=ACHIEVED_COLOR,
         zorder=2,
-        label="Achieved",
+        label="Realized",
     )
     axis.scatter(
         coverage_ach_years,
@@ -106,7 +123,9 @@ def _draw_forest_coverage(axis):
     axis.set_ylim(19.3, 26.7)
     axis.set_yticks([20, 21, 22, 23, 24, 25, 26])
 
-    for x_value, y_value, label in zip(coverage_ach_years, coverage_ach_vals, coverage_ach_labels):
+    for x_value, y_value, label in zip(
+        coverage_ach_years, coverage_ach_vals, coverage_ach_labels
+    ):
         axis.annotate(
             label,
             (x_value, y_value),
@@ -137,18 +156,35 @@ def _draw_forest_coverage(axis):
 
 def _draw_forest_stock(axis):
     stock_years, stock_vals, stock_labels = _to_arrays(STOCK_TARGET_POINTS)
-    stock_ach_years, stock_ach_vals, stock_ach_labels = _to_arrays(STOCK_ACHIEVED_POINTS)
+    stock_ach_years, stock_ach_vals, stock_ach_labels = _to_arrays(
+        STOCK_ACHIEVED_POINTS
+    )
 
-    axis.plot(stock_years, stock_vals, linewidth=2.1, color=TARGET_COLOR, zorder=2, label="Target")
-    axis.scatter(stock_years, stock_vals, s=60, facecolor="white", edgecolor=TARGET_COLOR, linewidth=1.4, zorder=3)
+    axis.plot(
+        stock_years,
+        stock_vals,
+        linewidth=2.1,
+        color=TARGET_COLOR,
+        zorder=2,
+        linestyle="--",
+        label="Target",
+    )
+    axis.scatter(
+        stock_years,
+        stock_vals,
+        s=60,
+        facecolor="white",
+        edgecolor=TARGET_COLOR,
+        linewidth=1.4,
+        zorder=3,
+    )
     axis.plot(
         stock_ach_years,
         stock_ach_vals,
         linewidth=2.0,
-        linestyle="--",
         color=ACHIEVED_COLOR,
         zorder=2,
-        label="Achieved",
+        label="Realized",
     )
     axis.scatter(
         stock_ach_years,
@@ -166,12 +202,14 @@ def _draw_forest_stock(axis):
     axis.set_ylim(13.5, 24.8)
     axis.set_yticks([14, 16, 18, 20, 22, 24])
 
-    for x_value, y_value, label in zip(stock_ach_years, stock_ach_vals, stock_ach_labels):
+    for x_value, y_value, label in zip(
+        stock_ach_years, stock_ach_vals, stock_ach_labels
+    ):
         axis.annotate(
             label,
             (x_value, y_value),
             textcoords="offset points",
-            xytext=(-10, 0),
+            xytext=(5, 10),
             ha="right",
             va="center",
             fontsize=9.2,
@@ -183,7 +221,7 @@ def _draw_forest_stock(axis):
             label,
             (x_value, y_value),
             textcoords="offset points",
-            xytext=(10, 0),
+            xytext=(10, -5),
             ha="left",
             va="center",
             fontsize=9.2,

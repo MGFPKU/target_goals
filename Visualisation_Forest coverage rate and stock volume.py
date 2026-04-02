@@ -88,7 +88,7 @@ def _draw_forest_coverage(axis):
         linestyle="--",
         color=ACHIEVED_COLOR,
         zorder=2,
-        label="Achieved",
+        label="Realized",
     )
     axis.scatter(
         coverage_ach_years,
@@ -148,7 +148,7 @@ def _draw_forest_stock(axis):
         linestyle="--",
         color=ACHIEVED_COLOR,
         zorder=2,
-        label="Achieved",
+        label="Realized",
     )
     axis.scatter(
         stock_ach_years,

@@ -69,7 +69,7 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
-                "Data source: Authors' dataset, compiled from official Chinese policy documents and national statistics."
+                "Source: China's 2035 National Determined Contributions."
             ),
         ),
         ui.nav_panel(
@@ -79,7 +79,7 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
-                "Data source: Authors’ dataset, compiled from official Chinese policy documents and national statistics."
+                "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
             ),
         ),
         ui.nav_panel(
@@ -89,7 +89,7 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
-                "Data source: Authors’ dataset, compiled from official Chinese policy documents and national statistics."
+                "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
             ),
         ),
         ui.nav_panel(
@@ -99,7 +99,7 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
-                "Data source: Authors’ dataset, compiled from official Chinese policy documents and national statistics."
+                "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
             ),
         ),
         ui.nav_panel(
@@ -109,7 +109,7 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
-                "Data source: Authors’ dataset, compiled from the China National Climate Target Database and official electricity statistics from the National Energy Administration and China Electricity Council."
+                "Source: Target data is from the Target Tracker; the realized data is from the National Energy Administration and China Electricity Council."
             ),
         ),
         ui.nav_panel(
@@ -119,7 +119,7 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
-                "Data source: Authors’ dataset, compiled from official Chinese forestry statistics and sector reports."
+                "Source: Target data is from the Target Tracker; the realized data is from official Chinese forestry statistics and sector reports."
             ),
         ),
         id="tab",

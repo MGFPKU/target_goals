@@ -140,7 +140,6 @@ def make_absolute_target_plot():
     ax.set_xticklabels(["Peak year", "2035"])
 
     ax.set_yticks([])
-    ax.set_xlabel("Year")
     ax.set_ylabel("Emissions level (economy-wide all-GHGs net emissions)")
 
     ax.set_title(

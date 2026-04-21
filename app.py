@@ -68,11 +68,14 @@ app_ui = ui.page_fluid(
                 ui.output_plot("carbon_intensity_plot", width="100%", height="460px"),
                 class_="plot-shell",
             ),
-            ui.p(
-                "Note: Realised carbon intensity is defined as CO₂ emissions from fuel combustion—sourced from China’s Biennial Update Reports and Biennial Transparency Reports on Climate Change—divided by real GDP at 2020 prices, as reported in China’s Statistical Yearbook. Where necessary, values are extended using officially reported carbon intensity reduction rates from China’s Annual Statistical Communiqués. China’s official carbon intensity targets cover CO₂ emissions from fuel combustion and selected industrial processes. Due to data constraints, the series presented here includes only CO₂ emissions from fuel combustion which, in 2021, accounted for approximately 96% of the total CO₂ emissions included in China’s carbon intensity indicator. Including CO₂ emissions from selected industrial processes would elevate the carbon intensity reduction levels slightly, for example by around 0.4% in 2021."
-            ),
-            ui.p(
-                "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
+            ui.div(
+                ui.p(
+                    "Note: Realised carbon intensity is defined as CO₂ emissions from fuel combustion—sourced from China’s Biennial Update Reports and Biennial Transparency Reports on Climate Change—divided by real GDP at 2020 prices, as reported in China’s Statistical Yearbook. Where necessary, values are extended using officially reported carbon intensity reduction rates from China’s Annual Statistical Communiqués. China’s official carbon intensity targets cover CO₂ emissions from fuel combustion and selected industrial processes. Due to data constraints, the series presented here includes only CO₂ emissions from fuel combustion which, in 2021, accounted for approximately 96% of the total CO₂ emissions included in China’s carbon intensity indicator. Including CO₂ emissions from selected industrial processes would elevate the carbon intensity reduction levels slightly, for example by around 0.4% in 2021."
+                ),
+                ui.p(
+                    "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
+                ),
+                class_="plot-shell",
             ),
         ),
         ui.nav_panel(
@@ -81,8 +84,11 @@ app_ui = ui.page_fluid(
                 ui.output_plot("energy_intensity_plot", width="100%", height="460px"),
                 class_="plot-shell",
             ),
-            ui.p(
-                "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
+            ui.div(
+                ui.p(
+                    "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
+                ),
+                class_="plot-shell",
             ),
         ),
         ui.nav_panel(
@@ -91,7 +97,10 @@ app_ui = ui.page_fluid(
                 ui.output_plot("absolute_target_plot", width="100%", height="460px"),
                 class_="plot-shell",
             ),
-            ui.p("Source: China's 2035 National Determined Contributions."),
+            ui.div(
+                ui.p("Source: China's 2035 National Determined Contributions."),
+                class_="plot-shell",
+            ),
         ),
         ui.nav_panel(
             "Energy mix shares",
@@ -99,11 +108,14 @@ app_ui = ui.page_fluid(
                 ui.output_plot("energy_mix_shares_plot", width="100%", height="560px"),
                 class_="plot-shell",
             ),
-            ui.p(
-                "Note: Non-fossil refers to the energy consumption from hydropower, nuclear power, wind power, solar power, biomass energy, and geothermal energy."
-            ),
-            ui.p(
-                "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
+            ui.div(
+                ui.p(
+                    "Note: Non-fossil refers to the energy consumption from hydropower, nuclear power, wind power, solar power, biomass energy, and geothermal energy."
+                ),
+                ui.p(
+                    "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
+                ),
+                class_="plot-shell",
             ),
         ),
         ui.nav_panel(
@@ -112,11 +124,14 @@ app_ui = ui.page_fluid(
                 ui.output_plot("installed_capacity_plot", width="100%", height="620px"),
                 class_="plot-shell",
             ),
-            ui.p(
-                "Note: Installed capacity refers to the total power output of all power generation units at rated conditions."
-            ),
-            ui.p(
-                "Source: Target data is from the Target Tracker; the realized data is from the National Energy Administration and China Electricity Council."
+            ui.div(
+                ui.p(
+                    "Note: Installed capacity refers to the total power output of all power generation units at rated conditions."
+                ),
+                ui.p(
+                    "Source: Target data is from the Target Tracker; the realized data is from the National Energy Administration and China Electricity Council."
+                ),
+                class_="plot-shell",
             ),
         ),
         ui.nav_panel(
@@ -125,11 +140,14 @@ app_ui = ui.page_fluid(
                 ui.output_plot("forest_stock_plot", width="100%", height="430px"),
                 class_="plot-shell",
             ),
-            ui.p(
-                "Note: Forest stock volume refers to the total trunk volume of all trees in the forest."
-            ),
-            ui.p(
-                "Source: Target data is from the Target Tracker; the realized data is from official Chinese forestry statistics and sector reports."
+            ui.div(
+                ui.p(
+                    "Note: Forest stock volume refers to the total trunk volume of all trees in the forest."
+                ),
+                ui.p(
+                    "Source: Target data is from the Target Tracker; the realized data is from official Chinese forestry statistics and sector reports."
+                ),
+                class_="plot-shell",
             ),
         ),
         id="tab",

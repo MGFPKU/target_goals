@@ -113,6 +113,9 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
+                "Note: Installed capacity refers to the total power output of all power generation units at rated conditions."
+            ),
+            ui.p(
                 "Source: Target data is from the Target Tracker; the realized data is from the National Energy Administration and China Electricity Council."
             ),
         ),

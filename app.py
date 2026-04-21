@@ -126,6 +126,9 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
+                "Note: Forest stock volume refers to the total trunk volume of all trees in the forest."
+            ),
+            ui.p(
                 "Source: Target data is from the Target Tracker; the realized data is from official Chinese forestry statistics and sector reports."
             ),
         ),

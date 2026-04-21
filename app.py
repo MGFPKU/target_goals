@@ -59,6 +59,22 @@ app_ui = ui.page_fluid(
         .nav-tabs .nav-link.active {
             color: #000000 !important;
         }
+
+        /* Center the entire app content */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        .container-fluid {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
         """
     ),
     ui.navset_tab(

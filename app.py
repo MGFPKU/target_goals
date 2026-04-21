@@ -100,6 +100,9 @@ app_ui = ui.page_fluid(
                 class_="plot-shell",
             ),
             ui.p(
+                "Note: Non-fossil refers to the energy consumption from hydropower, nuclear power, wind power, solar power, biomass energy, and geothermal energy."
+            ),
+            ui.p(
                 "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
             ),
         ),

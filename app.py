@@ -63,16 +63,6 @@ app_ui = ui.page_fluid(
     ),
     ui.navset_tab(
         ui.nav_panel(
-            "Absolute target",
-            ui.div(
-                ui.output_plot("absolute_target_plot", width="100%", height="460px"),
-                class_="plot-shell",
-            ),
-            ui.p(
-                "Source: China's 2035 National Determined Contributions."
-            ),
-        ),
-        ui.nav_panel(
             "Carbon intensity",
             ui.div(
                 ui.output_plot("carbon_intensity_plot", width="100%", height="460px"),
@@ -91,6 +81,14 @@ app_ui = ui.page_fluid(
             ui.p(
                 "Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics."
             ),
+        ),
+        ui.nav_panel(
+            "Absolute target",
+            ui.div(
+                ui.output_plot("absolute_target_plot", width="100%", height="460px"),
+                class_="plot-shell",
+            ),
+            ui.p("Source: China's 2035 National Determined Contributions."),
         ),
         ui.nav_panel(
             "Energy mix shares",
@@ -123,6 +121,7 @@ app_ui = ui.page_fluid(
             ),
         ),
         id="tab",
+        selected="Energy intensity",
     ),
 )
 

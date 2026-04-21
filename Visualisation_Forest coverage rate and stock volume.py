@@ -118,7 +118,6 @@ def _draw_forest_coverage(axis):
     )
 
     axis.set_xticks(coverage_years.astype(int))
-    axis.set_xlabel("Year")
     axis.set_ylabel("Forest coverage rate (%)")
     axis.set_ylim(19.3, 26.7)
     axis.set_yticks([20, 21, 22, 23, 24, 25, 26])
@@ -197,7 +196,6 @@ def _draw_forest_stock(axis):
     )
 
     axis.set_xticks(np.array([2015, 2020, 2025, 2030, 2035]))
-    axis.set_xlabel("Year")
     axis.set_ylabel("Forest stock volume (billion m³)")
     axis.set_ylim(13.5, 24.8)
     axis.set_yticks([14, 16, 18, 20, 22, 24])

@@ -226,7 +226,7 @@ def _draw_forest_stock(axis):
             color=TARGET_COLOR,
         )
 
-    axis.set_title("Forest stock volume", loc="left", fontweight="bold")
+    axis.set_title("Target and realized forest stock volume", loc="left", fontweight="bold")
     axis.legend(frameon=False, loc="upper left")
     _style_axis(axis)
 

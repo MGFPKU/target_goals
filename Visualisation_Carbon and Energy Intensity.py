@@ -364,7 +364,7 @@ def make_energy_intensity_plot():
     ax.set_xticks([2005, 2010, 2015, 2020, 2025, 2030])
     ax.set_ylim(min(y_values) * 0.9, max(y_values) * 1.03)
     ax.set_ylabel("Energy intensity (tce per 10,000 yuan, 2005 prices)")
-    ax.set_title("Energy intensity", loc="left", fontweight="bold")
+    ax.set_title("Target and realized energy intensity", loc="left", fontweight="bold")
     apply_grid(ax)
 
     legend_items = [

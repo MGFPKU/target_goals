@@ -369,7 +369,7 @@ def make_energy_intensity_plot():
     legend_items = [
         Line2D([0], [0], color=COLOR_REALIZED, lw=1.9, marker="o", markersize=3.8, label=i18n("Realized")),
         Line2D([0], [0], color=COLOR_ABS_DIAMOND, marker="D", linestyle="None", markersize=5.0, label=i18n("Absolute targets")),
-        Line2D([0], [0], color=COLOR_TARGET, lw=1.4, linestyle=(0, (0.5, 1.4)), label="Percentage targets"),
+        Line2D([0], [0], color=COLOR_TARGET, lw=1.4, linestyle=(0, (0.5, 1.4)), label=i18n("Percentage targets")),
     ]
     ax.legend(handles=legend_items, frameon=False, loc="upper right")
 

@@ -10,8 +10,7 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.legend_handler import HandlerTuple
 from matplotlib.ticker import MultipleLocator
 
-plt.rcParams["font.family"] = "Arial"
-mpl.rcParams["font.serif"] = ["Arial"]
+from i18n import i18n, get_font_family
 
 
 TARGET_DATA = [
@@ -178,15 +177,15 @@ def make_energy_mix_shares_plot():
     ax.yaxis.set_major_locator(MultipleLocator(10))
     ax.grid(axis="y", linestyle="--", alpha=0.35)
     ax.set_ylim(0, 100)
-    ax.set_ylabel("Share by Source (%)", fontsize=14)
-    ax.set_title("Energy mix targets and realized shares in China", loc="left", fontweight="bold")
+    ax.set_ylabel(i18n("Share by Source (%)"), fontsize=14)
+    ax.set_title(i18n("Energy mix targets and realized shares in China"), loc="left", fontweight="bold")
     ax.set_xticks(x)
     ax.set_xticklabels(target_years)
 
     handles: list[Artist | tuple[Artist, ...]] = []
     labels: list[str] = []
 
-    handle, label = _header("Primary energy consumption")
+    handle, label = _header(i18n("Primary energy consumption"))
     handles.append(handle)
     labels.append(label)
 
@@ -212,9 +211,9 @@ def make_energy_mix_shares_plot():
             linestyle="None",
         )
         handles.append((target, actual))
-        labels.append(fuel.replace(" (primary energy consumption)", ""))
+        labels.append(i18n(fuel.replace(" (primary energy consumption)", "")))
 
-    handle, label = _header("Terminal energy consumption")
+    handle, label = _header(i18n("Terminal energy consumption"))
     handles.append(handle)
     labels.append(label)
     handles.append(
@@ -229,9 +228,9 @@ def make_energy_mix_shares_plot():
             linestyle="None",
         )
     )
-    labels.append("Electricity")
+    labels.append(i18n("Electricity"))
 
-    handle, label = _header("Primary energy generation")
+    handle, label = _header(i18n("Primary energy generation"))
     handles.append(handle)
     labels.append(label)
     handles.append(
@@ -246,9 +245,9 @@ def make_energy_mix_shares_plot():
             linestyle="None",
         )
     )
-    labels.append("Non-fossil")
+    labels.append(i18n("Non-fossil"))
 
-    handle, label = _header("Symbols")
+    handle, label = _header(i18n("Symbols"))
     handles.append(handle)
     labels.append(label)
 
@@ -257,7 +256,7 @@ def make_energy_mix_shares_plot():
     revision_symbol = mlines.Line2D([], [], color="black", marker=r"$\rightarrow$", markersize=10, linestyle="None")
 
     handles.extend([target_symbol, actual_symbol, revision_symbol])
-    labels.extend(["Target", "Realized", "Revised target"])
+    labels.extend([i18n("Target"), i18n("Realized"), i18n("Revised target")])
 
     legend = ax.legend(
         handles,
@@ -270,15 +269,15 @@ def make_energy_mix_shares_plot():
         handletextpad=0.8,
         loc="upper left",
         bbox_to_anchor=(0.01, 0.99),
-        prop=FontProperties(family="Arial", size=9),
+        prop=FontProperties(family=get_font_family(), size=9),
     )
 
     for text in legend.get_texts():
         if text.get_text() in [
-            "Primary energy consumption",
-            "Terminal energy consumption",
-            "Primary energy generation",
-            "Symbols",
+            i18n("Primary energy consumption"),
+            i18n("Terminal energy consumption"),
+            i18n("Primary energy generation"),
+            i18n("Symbols"),
         ]:
             text.set_fontweight("bold")
 

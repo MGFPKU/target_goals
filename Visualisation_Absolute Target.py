@@ -1,11 +1,10 @@
 import matplotlib.patheffects as pe
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import rcParams
 from matplotlib.patches import Patch
 from matplotlib.ticker import AutoMinorLocator
 
-rcParams["font.family"] = "Arial"
+from i18n import i18n
 
 COLOR_TARGET = "#2F6B58"
 COLOR_RANGE_FILL = "#2F6B58"
@@ -54,7 +53,7 @@ def make_absolute_target_plot():
         y_upper,
         color=COLOR_RANGE_FILL,
         alpha=0.3,
-        label="2035 target range",
+        label=i18n("2035 target range"),
         zorder=2,
     )
 
@@ -83,7 +82,7 @@ def make_absolute_target_plot():
     # Peak point
     ax.scatter([peak_year], [peak_level], color=COLOR_TARGET, s=40, zorder=5)
     ax.annotate(
-        "Peak level",
+        i18n("Peak level"),
         (peak_year, peak_level),
         xytext=(0, 9),
         textcoords="offset points",
@@ -137,13 +136,13 @@ def make_absolute_target_plot():
     ax.set_ylim(88, 103)
 
     ax.set_xticks([peak_year, target_year])
-    ax.set_xticklabels(["Peak year", "2035"])
+    ax.set_xticklabels([i18n("Peak year"), "2035"])
 
     ax.set_yticks([])
-    ax.set_ylabel("Emissions level (economy-wide all-GHGs net emissions)")
+    ax.set_ylabel(i18n("Emissions level (economy-wide all-GHGs net emissions)"))
 
     ax.set_title(
-        "China's first absolute carbon emissions\nreduction target",
+        i18n("China's first absolute carbon emissions\nreduction target"),
         loc="left",
         fontweight="bold",
     )
@@ -158,7 +157,7 @@ def make_absolute_target_plot():
             facecolor=COLOR_RANGE_FILL,
             edgecolor="none",
             alpha=0.3,
-            label="2035 target range",
+            label=i18n("2035 target range"),
         ),
     ]
     ax.legend(handles=legend_items, frameon=False, loc="upper right")

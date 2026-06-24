@@ -5,12 +5,11 @@ import matplotlib.patheffects as pe
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib import rcParams
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 from matplotlib.ticker import AutoMinorLocator
 
-rcParams["font.family"] = "Arial"
+from i18n import i18n
 
 COLOR_REALIZED = "#405A79"
 COLOR_TARGET = "#2F6B58"
@@ -266,14 +265,14 @@ def make_carbon_intensity_plot():
     ax.set_xlim(2005, 2031)
     ax.set_xticks([2005, 2010, 2015, 2020, 2025, 2030])
     ax.set_ylim(min(y_values) * 0.9, max(y_values) * 1.03)
-    ax.set_ylabel("Carbon intensity (kg CO$_2$ per 10,000 yuan, 2005 prices)")
-    ax.set_title("Target and realized carbon intensity", loc="left", fontweight="bold")
+    ax.set_ylabel(i18n("Carbon intensity (kg CO$_2$ per 10,000 yuan, 2005 prices)"))
+    ax.set_title(i18n("Target and realized carbon intensity"), loc="left", fontweight="bold")
     apply_grid(ax)
 
     legend_items = [
-        Line2D([0], [0], color=COLOR_REALIZED, lw=1.9, marker="o", markersize=3.8, label="Realized"),
-        Line2D([0], [0], color=COLOR_TARGET, lw=1.4, linestyle=(0, (0.5, 1.4)), label="5YP target"),
-        Patch(facecolor=COLOR_RANGE_FILL, edgecolor="none", alpha=0.3, label="Long-term range target"),
+        Line2D([0], [0], color=COLOR_REALIZED, lw=1.9, marker="o", markersize=3.8, label=i18n("Realized")),
+        Line2D([0], [0], color=COLOR_TARGET, lw=1.4, linestyle=(0, (0.5, 1.4)), label=i18n("5YP target")),
+        Patch(facecolor=COLOR_RANGE_FILL, edgecolor="none", alpha=0.3, label=i18n("Long-term range target")),
     ]
     ax.legend(handles=legend_items, frameon=False, loc="upper right")
 
@@ -363,14 +362,14 @@ def make_energy_intensity_plot():
     ax.set_xlim(2005, 2031)
     ax.set_xticks([2005, 2010, 2015, 2020, 2025, 2030])
     ax.set_ylim(min(y_values) * 0.9, max(y_values) * 1.03)
-    ax.set_ylabel("Energy intensity (tce per 10,000 yuan, 2005 prices)")
-    ax.set_title("Target and realized energy intensity", loc="left", fontweight="bold")
+    ax.set_ylabel(i18n("Energy intensity (tce per 10,000 yuan, 2005 prices)"))
+    ax.set_title(i18n("Target and realized energy intensity"), loc="left", fontweight="bold")
     apply_grid(ax)
 
     legend_items = [
-        Line2D([0], [0], color=COLOR_REALIZED, lw=1.9, marker="o", markersize=3.8, label="Realized"),
-        Line2D([0], [0], color=COLOR_ABS_DIAMOND, marker="D", linestyle="None", markersize=5.0, label="Absolute targets"),
-        Line2D([0], [0], color=COLOR_TARGET, lw=1.4, linestyle=(0, (0.5, 1.4)), label="Percentage targets"),
+        Line2D([0], [0], color=COLOR_REALIZED, lw=1.9, marker="o", markersize=3.8, label=i18n("Realized")),
+        Line2D([0], [0], color=COLOR_ABS_DIAMOND, marker="D", linestyle="None", markersize=5.0, label=i18n("Absolute targets")),
+        Line2D([0], [0], color=COLOR_TARGET, lw=1.4, linestyle=(0, (0.5, 1.4)), label=i18n("Percentage targets")),
     ]
     ax.legend(handles=legend_items, frameon=False, loc="upper right")
 

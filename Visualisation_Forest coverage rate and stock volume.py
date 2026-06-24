@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from i18n import i18n
+
 plt.rcParams.update(
     {
-        "font.family": "Arial",
         "font.size": 11,
         "axes.labelsize": 11,
         "axes.titlepad": 10,
@@ -88,7 +89,7 @@ def _draw_forest_coverage(axis):
         color=TARGET_COLOR,
         linestyle="--",
         zorder=2,
-        label="Target",
+        label=i18n("Target"),
     )
     axis.scatter(
         coverage_years,
@@ -105,7 +106,7 @@ def _draw_forest_coverage(axis):
         linewidth=2.0,
         color=ACHIEVED_COLOR,
         zorder=2,
-        label="Realized",
+        label=i18n("Realized"),
     )
     axis.scatter(
         coverage_ach_years,
@@ -118,7 +119,7 @@ def _draw_forest_coverage(axis):
     )
 
     axis.set_xticks(coverage_years.astype(int))
-    axis.set_ylabel("Forest coverage rate (%)")
+    axis.set_ylabel(i18n("Forest coverage rate (%)"))
     axis.set_ylim(19.3, 26.7)
     axis.set_yticks([20, 21, 22, 23, 24, 25, 26])
 
@@ -148,7 +149,7 @@ def _draw_forest_coverage(axis):
             color=TARGET_COLOR,
         )
 
-    axis.set_title("Forest coverage rate", loc="left", fontweight="bold")
+    axis.set_title(i18n("Forest coverage rate"), loc="left", fontweight="bold")
     axis.legend(frameon=False, loc="upper left")
     _style_axis(axis)
 
@@ -166,7 +167,7 @@ def _draw_forest_stock(axis):
         color=TARGET_COLOR,
         zorder=2,
         linestyle="--",
-        label="Target",
+        label=i18n("Target"),
     )
     axis.scatter(
         stock_years,
@@ -183,7 +184,7 @@ def _draw_forest_stock(axis):
         linewidth=2.0,
         color=ACHIEVED_COLOR,
         zorder=2,
-        label="Realized",
+        label=i18n("Realized"),
     )
     axis.scatter(
         stock_ach_years,
@@ -196,7 +197,7 @@ def _draw_forest_stock(axis):
     )
 
     axis.set_xticks(np.array([2015, 2020, 2025, 2030, 2035]))
-    axis.set_ylabel("Forest stock volume (billion m³)")
+    axis.set_ylabel(i18n("Forest stock volume (billion m³)"))
     axis.set_ylim(13.5, 24.8)
     axis.set_yticks([14, 16, 18, 20, 22, 24])
 
@@ -226,7 +227,7 @@ def _draw_forest_stock(axis):
             color=TARGET_COLOR,
         )
 
-    axis.set_title("Target and realized forest stock volume", loc="left", fontweight="bold")
+    axis.set_title(i18n("Target and realized forest stock volume"), loc="left", fontweight="bold")
     axis.legend(frameon=False, loc="upper left")
     _style_axis(axis)
 

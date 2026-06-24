@@ -44,7 +44,7 @@ def make_absolute_target_plot():
     y_upper = np.array([peak_level, target_upper])
     y_lower = np.array([peak_level, target_lower])
 
-    fig, ax = plt.subplots(figsize=(9.2, 5.2), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(12.0, 5.2), constrained_layout=True)
 
     # Target corridor (shaded band)
     ax.fill_between(

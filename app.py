@@ -53,7 +53,7 @@ app_ui = ui.page_fluid(
     ui.tags.style(
         """
         .plot-shell {
-            max-width: 1200px;
+            max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -115,7 +115,7 @@ app_ui = ui.page_fluid(
         ui.nav_panel(
             i18n("Absolute target"),
             ui.div(
-                ui.output_plot("absolute_target_plot", width="100%", height="460px"),
+                ui.output_plot("absolute_target_plot", width="600px", height="460px"),
                 class_="plot-shell",
             ),
             ui.div(
@@ -142,7 +142,7 @@ app_ui = ui.page_fluid(
         ui.nav_panel(
             i18n("Installed power generation capacity"),
             ui.div(
-                ui.output_plot("installed_capacity_plot", width="100%", height="620px"),
+                ui.output_plot("installed_capacity_plot", width="1000px", height="620px"),
                 class_="plot-shell",
             ),
             ui.div(

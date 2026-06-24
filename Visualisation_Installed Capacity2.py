@@ -100,8 +100,8 @@ def _draw_diff_panel(axis, year):
 
 
 def make_installed_capacity_plot():
-    fig = plt.figure(figsize=(12, 10))
-    grid = GridSpec(2, 2, width_ratios=[2.6, 1.2], height_ratios=[1, 1], wspace=0.30, hspace=0.32)
+    fig = plt.figure(figsize=(14, 10))
+    grid = GridSpec(2, 2, width_ratios=[2.5, 1.5], height_ratios=[1, 1], wspace=0.30, hspace=0.32)
 
     ax_main = fig.add_subplot(grid[:, 0])
     ax_diff_2015 = fig.add_subplot(grid[0, 1])

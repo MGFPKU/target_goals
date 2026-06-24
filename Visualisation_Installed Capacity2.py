@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Patch
 
-mpl.rcParams["font.family"] = "Arial"
+from i18n import i18n
 
 TARGET_DATA = {
     2015: {
@@ -92,11 +92,11 @@ def _draw_diff_panel(axis, year):
 
     axis.bar(OVERLAP_TECH, differences, color=bar_colors, edgecolor="black", linewidth=0.8)
     axis.axhline(0, color="black", linewidth=0.8)
-    axis.set_title(f"Target achievement gap ({year})", loc="left", fontweight="bold")
-    axis.set_ylabel("GW")
+    axis.set_title(i18n("Target achievement gap ({})", year), loc="left", fontweight="bold")
+    axis.set_ylabel(i18n("GW"))
     axis.grid(axis="y", linestyle="--", alpha=0.3)
     axis.set_xticks(range(len(OVERLAP_TECH)))
-    axis.set_xticklabels(["Nuclear", "Hydro", "Wind", "Solar", "Pumped\nstorage"], fontsize=9)
+    axis.set_xticklabels([i18n("Nuclear"), i18n("Hydro"), i18n("Wind"), i18n("Solar"), i18n("Pumped\nstorage")], fontsize=9)
 
 
 def make_installed_capacity_plot():
@@ -128,7 +128,7 @@ def make_installed_capacity_plot():
                 linewidth=line_width,
             )
             bottom += value
-        ax_main.text(TARGET_POS[year], bottom + 25, "Target", ha="center", va="bottom", rotation=90)
+        ax_main.text(TARGET_POS[year], bottom + 25, i18n("Target"), ha="center", va="bottom", rotation=90)
 
     for year, values in ACHIEVED_DATA.items():
         bottom = 0
@@ -146,9 +146,9 @@ def make_installed_capacity_plot():
                 linewidth=line_width,
             )
             bottom += value
-        ax_main.text(ACHIEVED_POS[year], bottom + 25, "Realized", ha="center", va="bottom", rotation=90)
+        ax_main.text(ACHIEVED_POS[year], bottom + 25, i18n("Realized"), ha="center", va="bottom", rotation=90)
 
-    ax_main.set_ylabel("Installed capacity (GW)")
+    ax_main.set_ylabel(i18n("Installed capacity (GW)"))
     ax_main.grid(axis="y", linestyle="--", alpha=0.35)
     ax_main.set_axisbelow(True)
 
@@ -178,16 +178,16 @@ def make_installed_capacity_plot():
         "new energy storage",
     ]
     legend_items = [
-        Patch(facecolor=COLOR_MAP[technology], edgecolor="black", linewidth=line_width, label=technology.capitalize())
+        Patch(facecolor=COLOR_MAP[technology], edgecolor="black", linewidth=line_width, label=i18n(technology.capitalize()))
         for technology in legend_order
     ]
-    ax_main.legend(handles=legend_items, frameon=False, ncol=2, title="Technology", loc="upper left")
+    ax_main.legend(handles=legend_items, frameon=False, ncol=2, title=i18n("Technology"), loc="upper left")
 
     _draw_diff_panel(ax_diff_2015, 2015)
     _draw_diff_panel(ax_diff_2020, 2020)
 
     ax_main.set_title(
-        "Installed capacity targets, realized values, and\nachievement gaps for major power technologies",
+        i18n("Installed capacity targets, realized values, and\nachievement gaps for major power technologies"),
         loc="left",
         fontweight="bold",
     )

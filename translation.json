@@ -17,7 +17,7 @@
     "Energy mix shares targets and realized values": "能源结构占比目标与实现值",
     "Installed capacity targets, realized values, and achievement gaps": "装机容量目标、实现值及差距",
     "Forest stock volume targets versus achieved values": "森林蓄积量目标与实现值对比",
-    "China's first absolute carbon emissions\nreduction target": "中国首个绝对碳排放\n减排目标",
+    "China's first absolute carbon emissions reduction target": "中国首个温室气体绝对量减排目标",
     "Peak level": "峰值水平",
     "Peak year": "峰值年",
     "Emissions level (economy-wide all-GHGs net emissions)": "排放水平（全经济范围温室气体净排放）",
@@ -61,6 +61,5 @@
     "Technology": "技术类型",
     "Installed capacity targets, realized values, and\nachievement gaps for major power technologies": "主要发电技术装机容量目标、\n实现值与差距",
     "Note: Realised carbon intensity is defined as CO₂ emissions from fuel combustion—sourced from China’s Biennial Update Reports and Biennial Transparency Reports on Climate Change—divided by real GDP at 2020 prices, as reported in China’s Statistical Yearbook. Values are extended using officially reported carbon intensity reduction rates from China’s Annual Statistical Communiqués. China’s official carbon intensity targets cover CO₂ emissions from fuel combustion and selected industrial processes. Due to data availability constraints, the series presented here includes only CO₂ emissions from fuel combustion which, in 2021, accounted for approximately 96% of the total CO₂ emissions included in China’s carbon intensity indicator. Including CO₂ emissions from selected industrial processes would elevate the carbon intensity reduction levels slightly.": "注：实现碳强度定义为燃料燃烧产生的CO₂排放（数据来源：中国气候变化两年更新报告和两年透明度报告）除以按2020年价格计算的实际GDP（数据来源：《中国统计年鉴》）。数值根据中国年度统计公报中官方公布的碳强度下降率进行延伸。中国官方碳强度目标涵盖燃料燃烧及部分工业过程产生的CO₂排放。受数据可得性限制，本图仅包含燃料燃烧产生的CO₂排放，2021年这部分约占中国碳强度指标所包含CO₂排放总量的96%。纳入部分工业过程的CO₂排放将使碳强度下降水平略有提高。",
-    "Pumped storage": "抽水蓄能",
-    "China's first absolute carbon emissions reduction target": "中国首个绝对碳排放减排目标"
+    "Pumped storage": "抽水蓄能"
 }

@@ -138,7 +138,7 @@ def server(input, output, session):
                 ),
             ),
             ui.nav_panel(
-                i18n("Absolute target"),
+                i18n("Absolute emissions"),
                 ui.div(
                     ui.output_plot("absolute_target_plot", width="600px", height="460px"),
                     class_="plot-shell",

@@ -70,6 +70,10 @@ app_ui = ui.page_fluid(
             flex-direction: column;
             min-height: 100vh;
             margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei',
+                '微软雅黑', 'PingFang SC', 'STHeiti', SimHei,
+                'Noto Sans SC', 'Noto Sans CJK SC',
+                Arial, Helvetica, sans-serif;
         }
 
         .container-fluid {

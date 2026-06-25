@@ -200,7 +200,7 @@ def server(input, output, session):
             selected=i18n("Energy intensity"),
         )
 
-    @render.plot(alt=i18n("China's first absolute carbon emissions reduction target"))
+    @render.plot(alt=i18n("China's first absolute GHG emissions reduction target"))
     def absolute_target_plot():
         set_language(lang())
         mpl.rcParams["font.family"] = get_font_family()

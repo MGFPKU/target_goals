@@ -142,7 +142,7 @@ def make_absolute_target_plot():
     ax.set_ylabel(i18n("Emissions level (economy-wide all-GHGs net emissions)"))
 
     ax.set_title(
-        i18n("China's first absolute carbon emissions reduction target"),
+        i18n("China's first absolute GHG emissions reduction target"),
         loc="left",
         fontweight="bold",
     )

@@ -1,7 +1,7 @@
 {
     "Carbon intensity": "碳强度",
     "Energy intensity": "能源强度",
-    "Absolute target": "绝对量减排目标",
+    "Absolute emissions": "绝对量减排目标",
     "Energy mix shares": "能源消费结构",
     "Installed power generation capacity": "发电装机容量",
     "Forest stock volume": "森林蓄积量",
@@ -17,7 +17,7 @@
     "Energy mix shares targets and realized values": "能源结构占比目标与实现值",
     "Installed capacity targets, realized values, and achievement gaps": "装机容量目标、实现值及差距",
     "Forest stock volume targets versus achieved values": "森林蓄积量目标与实现值对比",
-    "China's first absolute carbon emissions reduction target": "中国首个温室气体绝对量减排目标",
+    "China's first absolute GHG emissions reduction target": "中国首个温室气体绝对量减排目标",
     "Peak level": "峰值水平",
     "Peak year": "峰值年",
     "Emissions level (economy-wide all-GHGs net emissions)": "排放水平（全经济范围温室气体净排放）",

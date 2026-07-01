@@ -12,7 +12,7 @@ shiny run app.py --port 8000
 # http://localhost:8000?lang=CN
 
 # Run an individual plot module standalone (no server)
-python -m "Visualisation_Energy Shares3"
+python -m "Visualisation_Energy Shares"
 
 # Test font rendering
 python -c "

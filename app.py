@@ -34,7 +34,7 @@ make_energy_intensity_plot = _load_plot_builder(
 )
 make_energy_mix_shares_plot = _load_plot_builder(
     "energy_shares_viz",
-    "Visualisation_Energy Shares3.py",
+    "Visualisation_Energy Shares.py",
     "make_energy_mix_shares_plot",
 )
 make_installed_capacity_plot = _load_plot_builder(

@@ -38,7 +38,7 @@ Each tab corresponds to a self-contained `Visualisation_*.py` script. All data i
 | Carbon intensity         | `Visualisation_Carbon and Energy Intensity.py`          |
 | Energy intensity         | `Visualisation_Carbon and Energy Intensity.py`          |
 | Absolute emissions       | `Visualisation_Absolute Target.py`                      |
-| Energy mix shares        | `Visualisation_Energy Shares3.py`                       |
+| Energy mix shares        | `Visualisation_Energy Shares.py`                       |
 | Installed capacity       | `Visualisation_Installed Capacity2.py`                  |
 | Forest stock volume      | `Visualisation_Forest coverage rate and stock volume.py`|
 

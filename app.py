@@ -39,7 +39,7 @@ make_energy_mix_shares_plot = _load_plot_builder(
 )
 make_installed_capacity_plot = _load_plot_builder(
     "installed_capacity_viz",
-    "Visualisation_Installed Capacity2.py",
+    "Visualisation_Installed Capacity.py",
     "make_installed_capacity_plot",
 )
 make_forest_stock_plot = _load_plot_builder(

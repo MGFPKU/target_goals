@@ -135,7 +135,7 @@ def server(input, output, session):
             ui.nav_panel(
                 i18n("Energy mix shares"),
                 ui.div(
-                    ui.output_plot("energy_mix_shares_plot", width="100%", height="560px"),
+                    ui.output_plot("energy_mix_shares_plot", width="100%", height="500px"),
                     class_="plot-shell",
                 ),
                 ui.div(

@@ -176,7 +176,7 @@ fuel_order = ["Coal", "Gas", "Non-fossil"]
 
 def make_energy_mix_shares_plot():
 
-    fig, ax = plt.subplots(figsize=(16, 9.5))
+    fig, ax = plt.subplots(figsize=(10, 5.6), constrained_layout=True)
 
     # Align font with the existing project styling
     plt.rcParams.update(
@@ -188,7 +188,7 @@ def make_energy_mix_shares_plot():
     )
 
     # --------------------------------------------------------
-    # 4. Realised values as thicker lines
+    # 4. Realised values
     # --------------------------------------------------------
 
     for fuel in fuel_order:
@@ -201,7 +201,7 @@ def make_energy_mix_shares_plot():
             realised_subset["x"],
             realised_subset[fuel],
             color=colors[fuel],
-            linewidth=3.8,
+            linewidth=2.1,
             linestyle="-",
             marker=None,
             solid_capstyle="round",
@@ -209,7 +209,7 @@ def make_energy_mix_shares_plot():
         )
 
     # --------------------------------------------------------
-    # 5. Target values as larger dots
+    # 5. Target values
     # --------------------------------------------------------
 
     for fuel in fuel_order:
@@ -218,10 +218,10 @@ def make_energy_mix_shares_plot():
         ax.scatter(
             x,
             y_values,
-            s=190,
+            s=84,
             color=colors[fuel],
             edgecolor="white",
-            linewidth=1.8,
+            linewidth=1.1,
             zorder=4,
         )
 
@@ -251,8 +251,8 @@ def make_energy_mix_shares_plot():
                         arrowprops={
                             "arrowstyle": "-|>",
                             "color": "#202020",
-                            "linewidth": 2.5,
-                            "mutation_scale": 22,
+                            "linewidth": 1.7,
+                            "mutation_scale": 14,
                             "shrinkA": 7,
                             "shrinkB": 7,
                         },
@@ -274,7 +274,7 @@ def make_energy_mix_shares_plot():
     ax.grid(
         axis="y",
         linestyle="--",
-        linewidth=1.0,
+        linewidth=0.65,
         color="#BEBEBE",
         alpha=0.65,
         zorder=0,
@@ -287,36 +287,36 @@ def make_energy_mix_shares_plot():
 
     ax.set_xlabel(
         i18n("Target year"),
-        fontsize=19,
-        labelpad=14,
+        fontsize=11,
+        labelpad=8,
     )
 
     ax.set_ylabel(
         i18n("Share of primary energy consumption (%)"),
-        fontsize=19,
-        labelpad=14,
+        fontsize=11,
+        labelpad=8,
     )
 
     ax.set_xticks(x)
 
     ax.set_xticklabels(
         target_years,
-        fontsize=16,
+        fontsize=10,
     )
 
     ax.tick_params(
         axis="x",
-        length=6,
-        width=1.1,
-        pad=8,
+        length=4,
+        width=0.9,
+        pad=5,
         color="#4D4D4D",
     )
 
     ax.tick_params(
         axis="y",
-        length=6,
-        width=1.1,
-        pad=8,
+        length=4,
+        width=0.9,
+        pad=5,
         color="#4D4D4D",
     )
 
@@ -334,10 +334,10 @@ def make_energy_mix_shares_plot():
         [],
         marker="o",
         linestyle="None",
-        markersize=12,
+        markersize=8,
         markerfacecolor="#404040",
         markeredgecolor="white",
-        markeredgewidth=1.5,
+        markeredgewidth=1.0,
         color="#404040",
         label=i18n("Target"),
     )
@@ -346,8 +346,8 @@ def make_energy_mix_shares_plot():
         (0, 0),
         (1, 0),
         arrowstyle="-|>",
-        mutation_scale=20,
-        linewidth=2.2,
+        mutation_scale=14,
+        linewidth=1.7,
         color="#202020",
     )
 
@@ -355,7 +355,7 @@ def make_energy_mix_shares_plot():
         [],
         [],
         color="#404040",
-        linewidth=3.8,
+        linewidth=2.1,
         linestyle="-",
         label=i18n("Realised"),
     )
@@ -379,8 +379,8 @@ def make_energy_mix_shares_plot():
                 ydescent + height / 2,
             ),
             arrowstyle="-|>",
-            mutation_scale=fontsize * 1.2,
-            linewidth=2.2,
+            mutation_scale=fontsize,
+            linewidth=1.7,
             color="#202020",
         )
 
@@ -404,10 +404,10 @@ def make_energy_mix_shares_plot():
         loc="upper left",
         bbox_to_anchor=(0.03, 1.005),
         borderaxespad=0,
-        handlelength=2.6,
-        handletextpad=0.9,
-        labelspacing=0.75,
-        fontsize=15,
+        handlelength=2.3,
+        handletextpad=0.6,
+        labelspacing=0.45,
+        fontsize=10,
     )
 
     ax.add_artist(symbol_legend)
@@ -418,7 +418,7 @@ def make_energy_mix_shares_plot():
         [],
         marker="s",
         linestyle="None",
-        markersize=14,
+        markersize=9,
         markerfacecolor=colors["Coal"],
         markeredgecolor=colors["Coal"],
         label=i18n("Coal"),
@@ -429,7 +429,7 @@ def make_energy_mix_shares_plot():
         [],
         marker="s",
         linestyle="None",
-        markersize=14,
+        markersize=9,
         markerfacecolor=colors["Gas"],
         markeredgecolor=colors["Gas"],
         label=i18n("Gas"),
@@ -440,7 +440,7 @@ def make_energy_mix_shares_plot():
         [],
         marker="s",
         linestyle="None",
-        markersize=14,
+        markersize=9,
         markerfacecolor=colors["Non-fossil"],
         markeredgecolor=colors["Non-fossil"],
         label=i18n("Non-fossil"),
@@ -457,13 +457,11 @@ def make_energy_mix_shares_plot():
         loc="upper left",
         bbox_to_anchor=(0.42, 1.005),
         borderaxespad=0,
-        handlelength=1.1,
-        handletextpad=0.7,
-        columnspacing=1.8,
-        fontsize=15,
+        handlelength=0.9,
+        handletextpad=0.5,
+        columnspacing=1.2,
+        fontsize=10,
     )
-
-    plt.tight_layout()
 
     return fig
 

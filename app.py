@@ -17,19 +17,14 @@ def _load_plot_builder(module_name, script_name, function_name):
     return getattr(module, function_name)
 
 
-make_absolute_target_plot = _load_plot_builder(
-    "absolute_target_viz",
-    "Visualisation_Absolute Target.py",
-    "make_absolute_target_plot",
-)
 make_carbon_intensity_plot = _load_plot_builder(
-    "carbon_energy_viz",
-    "Visualisation_Carbon and Energy Intensity.py",
+    "annual_carbon_intensity_viz",
+    "Visualisation_Annual Carbon Intensity Reductions.py",
     "make_carbon_intensity_plot",
 )
 make_energy_intensity_plot = _load_plot_builder(
-    "carbon_energy_viz",
-    "Visualisation_Carbon and Energy Intensity.py",
+    "annual_energy_intensity_viz",
+    "Visualisation_Annual Energy Intensity Reductions.py",
     "make_energy_intensity_plot",
 )
 make_energy_mix_shares_plot = _load_plot_builder(
@@ -116,10 +111,10 @@ def server(input, output, session):
                 ),
                 ui.div(
                     ui.p(
-                        i18n("Note: Realised carbon intensity is defined as CO₂ emissions from fuel combustion—sourced from China’s Biennial Update Reports and Biennial Transparency Reports on Climate Change—divided by real GDP at 2020 prices, as reported in China’s Statistical Yearbook. Values are extended using officially reported carbon intensity reduction rates from China’s Annual Statistical Communiqués. China’s official carbon intensity targets cover CO₂ emissions from fuel combustion and selected industrial processes. Due to data availability constraints, the series presented here includes only CO₂ emissions from fuel combustion which, in 2021, accounted for approximately 96% of the total CO₂ emissions included in China’s carbon intensity indicator. Including CO₂ emissions from selected industrial processes would elevate the carbon intensity reduction levels slightly.")
+                        i18n("Note: Data are shown only for years in which they were reported in official sources.")
                     ),
                     ui.p(
-                        i18n("Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics.")
+                        i18n("Sources: Target data is from the Target Tracker; realised data from Statistical Communiques of the PRC, State Council Reports on the Work of the Government, Reports on the Implementation of the Plans for Economic and Social Development, and China's Policies and Actions on Climate Change Annual Reports.")
                     ),
                     class_="plot-shell",
                 ),
@@ -132,31 +127,23 @@ def server(input, output, session):
                 ),
                 ui.div(
                     ui.p(
-                        i18n("Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics.")
+                        i18n("Note: Data are shown only for years in which they were reported in official sources.")
                     ),
-                    class_="plot-shell",
-                ),
-            ),
-            ui.nav_panel(
-                i18n("Absolute emissions"),
-                ui.div(
-                    ui.output_plot("absolute_target_plot", width="600px", height="460px"),
-                    class_="plot-shell",
-                ),
-                ui.div(
-                    ui.p(i18n("Source: China's 2035 National Determined Contributions.")),
+                    ui.p(
+                        i18n("Sources: Target data is from the Target Tracker; realised data from Statistical Communiques of the PRC, State Council Reports on the Work of the Government, Reports on the Implementation of the Plans for Economic and Social Development, and China's Policies and Actions on Climate Change Annual Reports.")
+                    ),
                     class_="plot-shell",
                 ),
             ),
             ui.nav_panel(
                 i18n("Energy mix shares"),
                 ui.div(
-                    ui.output_plot("energy_mix_shares_plot", width="100%", height="560px"),
+                    ui.output_plot("energy_mix_shares_plot", width="100%", height="500px"),
                     class_="plot-shell",
                 ),
                 ui.div(
                     ui.p(
-                        i18n("Note: Non-fossil refers to the energy consumption from hydropower, nuclear power, wind power, solar power, biomass energy, and geothermal energy.")
+                        i18n("Note: Data are shown only for years in which they were reported in official sources. Non-fossil refers to the energy consumption from hydropower, nuclear power, wind power, solar power, biomass energy, and geothermal energy.")
                     ),
                     ui.p(
                         i18n("Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics.")
@@ -172,7 +159,7 @@ def server(input, output, session):
                 ),
                 ui.div(
                     ui.p(
-                        i18n("Note: Installed capacity refers to the total power output of all power generation units at rated conditions.")
+                        i18n("Note: Installed capacity refers to the total power output of all power generation units at rated conditions. Coal- and gas-fired capacity targets are combined as a thermal power target for comparison with realised data.")
                     ),
                     ui.p(
                         i18n("Source: Target data is from the Target Tracker; the realized data is from the National Energy Administration and China Electricity Council.")
@@ -200,19 +187,13 @@ def server(input, output, session):
             selected=i18n("Energy intensity"),
         )
 
-    @render.plot(alt=i18n("China's first absolute GHG emissions reduction target"))
-    def absolute_target_plot():
-        set_language(lang())
-        mpl.rcParams["font.family"] = get_font_family()
-        return make_absolute_target_plot()
-
-    @render.plot(alt=i18n("Carbon intensity targets (for the whole economy)"))
+    @render.plot(alt=i18n("Annual carbon intensity reductions"))
     def carbon_intensity_plot():
         set_language(lang())
         mpl.rcParams["font.family"] = get_font_family()
         return make_carbon_intensity_plot()
 
-    @render.plot(alt=i18n("Energy intensity targets (for the whole economy)"))
+    @render.plot(alt=i18n("Annual energy intensity reductions"))
     def energy_intensity_plot():
         set_language(lang())
         mpl.rcParams["font.family"] = get_font_family()

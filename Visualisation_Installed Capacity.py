@@ -5,10 +5,10 @@ from matplotlib.patches import Patch
 
 from i18n import i18n
 
+
 TARGET_DATA = {
     2015: {
-        "coal": 960,
-        "gas": 56,
+        "thermal": 960 + 56,
         "hydro": 290,
         "wind": 100,
         "solar": 35,
@@ -16,8 +16,7 @@ TARGET_DATA = {
         "pumped storage": 30,
     },
     2020: {
-        "coal": 1100,
-        "gas": 110,
+        "thermal": 1100 + 110,
         "hydro": 350,
         "wind": 210,
         "solar": 110,
@@ -53,8 +52,7 @@ ACHIEVED_DATA = {
 }
 
 TARGET_ORDER = [
-    "coal",
-    "gas",
+    "thermal",
     "nuclear",
     "hydro",
     "wind",
@@ -67,41 +65,60 @@ TARGET_ORDER = [
 ACHIEVED_ORDER = ["thermal", "nuclear", "hydro", "wind", "solar", "pumped storage"]
 
 COLOR_MAP = {
-    "coal": "#2F2F2F",                # charcoal
-    "gas": "#D9D9D9",                 # light gray
-    "thermal": "#7A7A7A",             # mid gray
-    "nuclear": "#8E1B11",             # logo red
-    "hydro": "#4C6F6A",               # muted blue-green, brand-adjacent
-    "wind": "#2A5F4A",                # logo green
-    "solar": "#6E8B4E",               # muted olive-green
-    "wind+solar": "#A7C8A0",          # pale green
-    "pumped storage": "#BFD3CF",      # pale teal-gray
+    "thermal": "#7A7A7A",  # mid gray
+    "nuclear": "#8E1B11",  # logo red
+    "hydro": "#4C6F6A",  # muted blue-green, brand-adjacent
+    "wind": "#2A5F4A",  # logo green
+    "solar": "#6E8B4E",  # muted olive-green
+    "wind+solar": "#A7C8A0",  # pale green
+    "pumped storage": "#BFD3CF",  # pale teal-gray
     "new energy storage": "#7FB7A3",  # soft green-teal
 }
 
 TARGET_POS = {2015: 0, 2020: 2, 2030: 4.2, 2035: 5.8}
 ACHIEVED_POS = {2015: 0.7, 2020: 2.7}
 
-
+# Thermal intentionally excluded from the achievement-gap panels
 OVERLAP_TECH = ["nuclear", "hydro", "wind", "solar", "pumped storage"]
 
 
 def _draw_diff_panel(axis, year):
-    differences = [ACHIEVED_DATA[year][tech] - TARGET_DATA[year][tech] for tech in OVERLAP_TECH]
+    differences = [
+        ACHIEVED_DATA[year][tech] - TARGET_DATA[year][tech] for tech in OVERLAP_TECH
+    ]
     bar_colors = [COLOR_MAP[tech] for tech in OVERLAP_TECH]
 
-    axis.bar(OVERLAP_TECH, differences, color=bar_colors, edgecolor="black", linewidth=0.8)
+    axis.bar(
+        range(len(OVERLAP_TECH)),
+        differences,
+        color=bar_colors,
+        edgecolor="black",
+        linewidth=0.8,
+    )
     axis.axhline(0, color="black", linewidth=0.8)
-    axis.set_title(i18n("Target achievement gap ({})", year), loc="left", fontweight="bold")
+    axis.set_title(
+        i18n("Target achievement gap ({})", year), loc="left", fontweight="bold"
+    )
     axis.set_ylabel(i18n("GW"))
     axis.grid(axis="y", linestyle="--", alpha=0.3)
     axis.set_xticks(range(len(OVERLAP_TECH)))
-    axis.set_xticklabels([i18n("Nuclear"), i18n("Hydro"), i18n("Wind"), i18n("Solar"), i18n("Pumped\nstorage")], fontsize=9)
+    axis.set_xticklabels(
+        [
+            i18n("Nuclear"),
+            i18n("Hydro"),
+            i18n("Wind"),
+            i18n("Solar"),
+            i18n("Pumped\nstorage"),
+        ],
+        fontsize=9,
+    )
 
 
 def make_installed_capacity_plot():
     fig = plt.figure(figsize=(14, 10))
-    grid = GridSpec(2, 2, width_ratios=[2.5, 1.5], height_ratios=[1, 1], wspace=0.30, hspace=0.32)
+    grid = GridSpec(
+        2, 2, width_ratios=[2.5, 1.5], height_ratios=[1, 1], wspace=0.30, hspace=0.32
+    )
 
     ax_main = fig.add_subplot(grid[:, 0])
     ax_diff_2015 = fig.add_subplot(grid[0, 1])
@@ -128,7 +145,14 @@ def make_installed_capacity_plot():
                 linewidth=line_width,
             )
             bottom += value
-        ax_main.text(TARGET_POS[year], bottom + 25, i18n("Target"), ha="center", va="bottom", rotation=90)
+        ax_main.text(
+            TARGET_POS[year],
+            bottom + 25,
+            i18n("Target"),
+            ha="center",
+            va="bottom",
+            rotation=90,
+        )
 
     for year, values in ACHIEVED_DATA.items():
         bottom = 0
@@ -146,7 +170,14 @@ def make_installed_capacity_plot():
                 linewidth=line_width,
             )
             bottom += value
-        ax_main.text(ACHIEVED_POS[year], bottom + 25, i18n("Realized"), ha="center", va="bottom", rotation=90)
+        ax_main.text(
+            ACHIEVED_POS[year],
+            bottom + 25,
+            i18n("Realized"),
+            ha="center",
+            va="bottom",
+            rotation=90,
+        )
 
     ax_main.set_ylabel(i18n("Installed capacity (GW)"))
     ax_main.grid(axis="y", linestyle="--", alpha=0.35)
@@ -166,8 +197,6 @@ def make_installed_capacity_plot():
     ax_main.set_ylim(0, max(max_target, max_achieved) + 400)
 
     legend_order = [
-        "coal",
-        "gas",
         "thermal",
         "nuclear",
         "hydro",
@@ -178,19 +207,33 @@ def make_installed_capacity_plot():
         "new energy storage",
     ]
     legend_items = [
-        Patch(facecolor=COLOR_MAP[technology], edgecolor="black", linewidth=line_width, label=i18n(technology.capitalize()))
+        Patch(
+            facecolor=COLOR_MAP[technology],
+            edgecolor="black",
+            linewidth=line_width,
+            label=i18n(technology.capitalize()),
+        )
         for technology in legend_order
     ]
-    ax_main.legend(handles=legend_items, frameon=False, ncol=2, title=i18n("Technology"), loc="upper left")
+    ax_main.legend(
+        handles=legend_items,
+        frameon=False,
+        ncol=2,
+        title=i18n("Technology"),
+        loc="upper left",
+    )
 
     _draw_diff_panel(ax_diff_2015, 2015)
     _draw_diff_panel(ax_diff_2020, 2020)
 
     ax_main.set_title(
-        i18n("Installed capacity targets, realized values, and\nachievement gaps for major power technologies"),
+        i18n(
+            "Installed capacity targets, realized values, and\nachievement gaps for major power technologies"
+        ),
         loc="left",
         fontweight="bold",
     )
+
     fig.tight_layout()
     return fig
 

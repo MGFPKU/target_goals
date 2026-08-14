@@ -127,7 +127,10 @@ def server(input, output, session):
                 ),
                 ui.div(
                     ui.p(
-                        i18n("Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics.")
+                        i18n("Note: Data are shown only for years in which they were reported in official sources.")
+                    ),
+                    ui.p(
+                        i18n("Sources: Target data is from the Target Tracker; realised data from Statistical Communiques of the PRC, State Council Reports on the Work of the Government, Reports on the Implementation of the Plans for Economic and Social Development, and China's Policies and Actions on Climate Change Annual Reports.")
                     ),
                     class_="plot-shell",
                 ),

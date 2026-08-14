@@ -140,7 +140,7 @@ def server(input, output, session):
                 ),
                 ui.div(
                     ui.p(
-                        i18n("Note: Non-fossil refers to the energy consumption from hydropower, nuclear power, wind power, solar power, biomass energy, and geothermal energy.")
+                        i18n("Note: Data are shown only for years in which they were reported in official sources. Non-fossil refers to the energy consumption from hydropower, nuclear power, wind power, solar power, biomass energy, and geothermal energy.")
                     ),
                     ui.p(
                         i18n("Source: Target data is from the Target Tracker; the realized data is from official Chinese policy documents and national statistics.")

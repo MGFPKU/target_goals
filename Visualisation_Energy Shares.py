@@ -1,19 +1,21 @@
 import re
 
-import matplotlib as mpl
 import matplotlib.lines as mlines
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.artist import Artist
-from matplotlib.font_manager import FontProperties
-from matplotlib.legend_handler import HandlerTuple
+from matplotlib.legend_handler import HandlerPatch
 from matplotlib.ticker import MultipleLocator
 
 from i18n import i18n, get_font_family
 
 
-TARGET_DATA = [
+# ------------------------------------------------------------
+# 1. Policy target data
+# ------------------------------------------------------------
+
+data = [
     (2013, "coal", "around 65 percent", 2015),
     (2013, "coal", "below 65 percent", 2017),
     (2014, "coal", "62 percent", 2020),
@@ -32,256 +34,437 @@ TARGET_DATA = [
     (2021, "non-fossil", "80 percent", 2060),
     (2023, "non-fossil", "18.3 percent", 2023),
     (2024, "non-fossil", "more than 30 percent", 2035),
-    (2020, "terminal-electricity", "27 percent", 2020),
-    (2025, "terminal-electricity", "30 percent", 2025),
-    (2010, "non-fossil-generation", "10 percent", 2010),
-    (2015, "non-fossil-generation", "30 percent", 2015),
-    (2025, "non-fossil-generation", "39 percent", 2025),
 ]
 
-FUEL_MAP = {
-    "coal": "Coal (primary energy consumption)",
-    "gas": "Gas (primary energy consumption)",
-    "non-fossil": "Non-fossil (primary energy consumption)",
-    "terminal-electricity": "Electricity share (terminal energy)",
-    "non-fossil-generation": "Non-fossil (power generation, primary energy)",
+
+def parse_percent(value):
+    match = re.search(r"([0-9]+\.?[0-9]*)", value)
+    return float(match.group(1)) if match else np.nan
+
+
+df = pd.DataFrame(
+    data,
+    columns=[
+        "Announcement_Year",
+        "Fuel",
+        "Targeted_Change",
+        "Target_Year",
+    ],
+)
+
+df["Value"] = df["Targeted_Change"].apply(parse_percent)
+
+
+fuel_map = {
+    "coal": "Coal",
+    "gas": "Gas",
+    "non-fossil": "Non-fossil",
 }
 
-ACTUAL_DATA = {
-    "Year": [2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2010],
-    "Coal (primary energy consumption)": [53.2, 54.8, 56.0, 55.9, 56.9, 57.7, 59.0, 60.6, 62.2, 63.8, 69.2],
-    "Gas (primary energy consumption)": [8.8, 8.5, 8.4, 8.8, 8.4, 8.0, 7.6, 6.9, 6.1, 5.8, 4.0],
-    "Non-fossil (primary energy consumption)": [19.8, 17.9, 17.6, 16.7, 15.9, 15.3, 14.5, 13.6, 13.0, 12.0, 9.4],
+df = df[df["Fuel"].isin(fuel_map)].copy()
+df["Fuel"] = df["Fuel"].map(fuel_map)
+
+
+df_sorted = df.sort_values(["Fuel", "Target_Year", "Announcement_Year"])
+
+df_grouped = (
+    df_sorted.groupby(["Fuel", "Target_Year"])
+    .last()
+    .reset_index()[["Fuel", "Target_Year", "Value"]]
+)
+
+df_pivot = df_grouped.pivot(
+    index="Target_Year",
+    columns="Fuel",
+    values="Value",
+).sort_index()
+
+
+revision_map = {}
+
+for fuel in df["Fuel"].unique():
+    revision_map[fuel] = (
+        df[df["Fuel"] == fuel].groupby("Target_Year")["Value"].apply(list).to_dict()
+    )
+
+
+# ------------------------------------------------------------
+# 2. Realised data
+# ------------------------------------------------------------
+
+actual_data = {
+    "Year": [
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2015,
+        2010,
+    ],
+    "Coal": [
+        np.nan,
+        53.2,
+        54.8,
+        56.0,
+        55.9,
+        56.9,
+        57.7,
+        59.0,
+        60.6,
+        62.2,
+        63.8,
+        69.2,
+    ],
+    "Gas": [
+        np.nan,
+        8.8,
+        8.5,
+        8.4,
+        8.8,
+        8.4,
+        8.0,
+        7.6,
+        6.9,
+        6.1,
+        5.8,
+        4.0,
+    ],
+    "Non-fossil": [
+        21.7,
+        19.8,
+        17.9,
+        17.6,
+        16.7,
+        15.9,
+        15.3,
+        14.5,
+        13.6,
+        13.0,
+        12.0,
+        9.4,
+    ],
 }
 
-COLORS = {
-    "Coal (primary energy consumption)": "#1a659b",
-    "Gas (primary energy consumption)": "#8E1B11",
-    "Non-fossil (primary energy consumption)": "#2A5F4A",
-    "Electricity share (terminal energy)": "#7B1FA2",
-    "Non-fossil (power generation, primary energy)": "#6D6D6D",
+
+df_actual = pd.DataFrame(actual_data).sort_values("Year").reset_index(drop=True)
+
+
+# ------------------------------------------------------------
+# 3. Plot setup
+# ------------------------------------------------------------
+
+target_years = df_pivot.index.tolist()
+x = np.arange(len(target_years))
+
+year_to_x = {year: position for position, year in enumerate(target_years)}
+
+
+colors = {
+    "Coal": "#1a659b",
+    "Gas": "#8E1B11",
+    "Non-fossil": "#2A5F4A",
 }
 
-
-def parse_percent(text):
-    match = re.search(r"([0-9]+\.?[0-9]*)", text)
-    return float(match.group(1)) if match else None
-
-
-def _header(text):
-    handle = mlines.Line2D([], [], linestyle="None")
-    return handle, text
+fuel_order = ["Coal", "Gas", "Non-fossil"]
 
 
 def make_energy_mix_shares_plot():
-    df = pd.DataFrame(TARGET_DATA, columns=["Announcement_Year", "Fuel", "Targeted_Change", "Target_Year"])
-    df["Value"] = df["Targeted_Change"].apply(parse_percent)
 
-    df = df[df["Fuel"].isin(FUEL_MAP.keys())].copy()
-    df["Fuel"] = df["Fuel"].map(FUEL_MAP)
+    fig, ax = plt.subplots(figsize=(16, 9.5))
 
-    df_sorted = df.sort_values(["Fuel", "Target_Year", "Announcement_Year"])
-    df_grouped = df_sorted.groupby(["Fuel", "Target_Year"]).last().reset_index()[["Fuel", "Target_Year", "Value"]]
-    df_pivot = df_grouped.pivot(index="Target_Year", columns="Fuel", values="Value").sort_index()
+    # Align font with the existing project styling
+    plt.rcParams.update(
+        {
+            "font.family": get_font_family(),
+            "figure.facecolor": "white",
+            "axes.facecolor": "white",
+        }
+    )
 
-    revision_map = {}
-    for fuel in df["Fuel"].unique():
-        revision_map[fuel] = df[df["Fuel"] == fuel].groupby("Target_Year")["Value"].apply(list).to_dict()
+    # --------------------------------------------------------
+    # 4. Realised values as thicker lines
+    # --------------------------------------------------------
 
-    df_actual = pd.DataFrame(ACTUAL_DATA)
+    for fuel in fuel_order:
+        realised_subset = df_actual[df_actual["Year"].isin(target_years)].copy()
 
-    target_years = df_pivot.index.tolist()
-    x = np.arange(len(target_years))
+        realised_subset["x"] = realised_subset["Year"].map(year_to_x)
+        realised_subset = realised_subset.sort_values("x")
 
-    fig, ax = plt.subplots(figsize=(14, 8))
+        ax.plot(
+            realised_subset["x"],
+            realised_subset[fuel],
+            color=colors[fuel],
+            linewidth=3.8,
+            linestyle="-",
+            marker=None,
+            solid_capstyle="round",
+            zorder=2,
+        )
 
-    for fuel in df_pivot.columns:
-        y_vals = df_pivot[fuel].reindex(target_years)
+    # --------------------------------------------------------
+    # 5. Target values as larger dots
+    # --------------------------------------------------------
 
-        for index, value in enumerate(y_vals):
-            if pd.isna(value):
-                continue
-            ax.plot(
-                index,
-                value,
-                marker="o",
-                color=COLORS[fuel],
-                markersize=15,
-                markeredgecolor="white",
-                markeredgewidth=1.5,
-            )
-            ax.plot(
-                index,
-                value,
-                marker="o",
-                color=COLORS[fuel],
-                markersize=7,
-                markeredgecolor="white",
-                markeredgewidth=1.2,
-            )
+    for fuel in fuel_order:
+        y_values = df_pivot[fuel].reindex(target_years)
 
-        for index, year in enumerate(target_years):
-            values = revision_map[fuel].get(year, [])
-            if len(values) <= 1:
-                continue
+        ax.scatter(
+            x,
+            y_values,
+            s=190,
+            color=colors[fuel],
+            edgecolor="white",
+            linewidth=1.8,
+            zorder=4,
+        )
 
-            df_revision = df[(df["Fuel"] == fuel) & (df["Target_Year"] == year)].sort_values("Announcement_Year")
-            ordered_values = df_revision["Value"].tolist()
-            if len(ordered_values) < 2:
-                continue
+    # --------------------------------------------------------
+    # 6. Revised targets as arrows
+    # --------------------------------------------------------
 
-            start_value, end_value = ordered_values[0], ordered_values[-1]
-            ax.bar(
-                x[index],
-                end_value - start_value,
-                bottom=start_value,
-                width=0.12,
-                color="gray",
-                alpha=0.6,
-                edgecolor="black",
-                linewidth=0.8,
-            )
-            ax.annotate(
-                "",
-                xy=(x[index], end_value),
-                xytext=(x[index], start_value),
-                arrowprops=dict(arrowstyle="->", color="black", linewidth=1.2),
-            )
+    for fuel in fuel_order:
+        for i, year in enumerate(target_years):
+            values = revision_map.get(fuel, {}).get(year, [])
 
-    year_to_x = {year: index for index, year in enumerate(target_years)}
-    tracked_fuels = [
-        "Coal (primary energy consumption)",
-        "Gas (primary energy consumption)",
-        "Non-fossil (primary energy consumption)",
-    ]
+            if len(values) > 1:
+                df_revision = df[
+                    (df["Fuel"] == fuel) & (df["Target_Year"] == year)
+                ].sort_values("Announcement_Year")
 
-    for _, row in df_actual.iterrows():
-        year = row["Year"]
-        if year not in year_to_x:
-            continue
-        x_index = year_to_x[year]
-        for fuel in tracked_fuels:
-            ax.plot(
-                x_index,
-                row[fuel],
-                marker="D",
-                color=COLORS[fuel],
-                markersize=7,
-                markeredgecolor="black",
-                markeredgewidth=0.8,
-            )
+                ordered_values = df_revision["Value"].tolist()
 
-    ax.set_facecolor("white")
+                if len(ordered_values) >= 2:
+                    start_value = ordered_values[0]
+                    end_value = ordered_values[-1]
+
+                    ax.annotate(
+                        "",
+                        xy=(x[i], end_value),
+                        xytext=(x[i], start_value),
+                        arrowprops={
+                            "arrowstyle": "-|>",
+                            "color": "#202020",
+                            "linewidth": 2.5,
+                            "mutation_scale": 22,
+                            "shrinkA": 7,
+                            "shrinkB": 7,
+                        },
+                        zorder=6,
+                    )
+
+    # --------------------------------------------------------
+    # 7. Axis styling
+    # --------------------------------------------------------
+
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
+
+    ax.spines["left"].set_linewidth(1.1)
+    ax.spines["bottom"].set_linewidth(1.1)
+
     ax.yaxis.set_major_locator(MultipleLocator(10))
-    ax.grid(axis="y", linestyle="--", alpha=0.35)
-    ax.set_ylim(0, 100)
-    ax.set_ylabel(i18n("Share by Source (%)"), fontsize=14)
-    ax.set_title(i18n("Energy mix targets and realized shares in China"), loc="left", fontweight="bold")
+
+    ax.grid(
+        axis="y",
+        linestyle="--",
+        linewidth=1.0,
+        color="#BEBEBE",
+        alpha=0.65,
+        zorder=0,
+    )
+
+    ax.set_ylim(
+        0,
+        90,
+    )
+
+    ax.set_xlabel(
+        i18n("Target year"),
+        fontsize=19,
+        labelpad=14,
+    )
+
+    ax.set_ylabel(
+        i18n("Share of primary energy consumption (%)"),
+        fontsize=19,
+        labelpad=14,
+    )
+
     ax.set_xticks(x)
-    ax.set_xticklabels(target_years)
 
-    handles: list[Artist | tuple[Artist, ...]] = []
-    labels: list[str] = []
-
-    handle, label = _header(i18n("Primary energy consumption"))
-    handles.append(handle)
-    labels.append(label)
-
-    for fuel in tracked_fuels:
-        target = mlines.Line2D(
-            [],
-            [],
-            color=COLORS[fuel],
-            marker="o",
-            markersize=8,
-            markeredgecolor="white",
-            markeredgewidth=1.2,
-            linestyle="None",
-        )
-        actual = mlines.Line2D(
-            [],
-            [],
-            color=COLORS[fuel],
-            marker="D",
-            markersize=6,
-            markeredgecolor="black",
-            markeredgewidth=0.8,
-            linestyle="None",
-        )
-        handles.append((target, actual))
-        labels.append(i18n(fuel.replace(" (primary energy consumption)", "")))
-
-    handle, label = _header(i18n("Terminal energy consumption"))
-    handles.append(handle)
-    labels.append(label)
-    handles.append(
-        mlines.Line2D(
-            [],
-            [],
-            color=COLORS["Electricity share (terminal energy)"],
-            marker="o",
-            markersize=8,
-            markeredgecolor="white",
-            markeredgewidth=1.2,
-            linestyle="None",
-        )
+    ax.set_xticklabels(
+        target_years,
+        fontsize=16,
     )
-    labels.append(i18n("Electricity"))
 
-    handle, label = _header(i18n("Primary energy generation"))
-    handles.append(handle)
-    labels.append(label)
-    handles.append(
-        mlines.Line2D(
-            [],
-            [],
-            color=COLORS["Non-fossil (power generation, primary energy)"],
-            marker="o",
-            markersize=8,
-            markeredgecolor="white",
-            markeredgewidth=1.2,
-            linestyle="None",
-        )
+    ax.tick_params(
+        axis="x",
+        length=6,
+        width=1.1,
+        pad=8,
+        color="#4D4D4D",
     )
-    labels.append(i18n("Non-fossil"))
 
-    handle, label = _header(i18n("Symbols"))
-    handles.append(handle)
-    labels.append(label)
+    ax.tick_params(
+        axis="y",
+        length=6,
+        width=1.1,
+        pad=8,
+        color="#4D4D4D",
+    )
 
-    target_symbol = mlines.Line2D([], [], color="black", marker="o", markersize=8, linestyle="None")
-    actual_symbol = mlines.Line2D([], [], color="black", marker="D", markersize=6, linestyle="None")
-    revision_symbol = mlines.Line2D([], [], color="black", marker=r"$\rightarrow$", markersize=10, linestyle="None")
+    ax.set_xlim(
+        -0.55,
+        len(target_years) - 0.45,
+    )
 
-    handles.extend([target_symbol, actual_symbol, revision_symbol])
-    labels.extend([i18n("Target"), i18n("Realized"), i18n("Revised target")])
+    # --------------------------------------------------------
+    # 8. Legend symbols
+    # --------------------------------------------------------
 
-    legend = ax.legend(
-        handles,
-        labels,
-        handler_map={tuple: HandlerTuple(ndivide=None)},
+    target_symbol = mlines.Line2D(
+        [],
+        [],
+        marker="o",
+        linestyle="None",
+        markersize=12,
+        markerfacecolor="#404040",
+        markeredgecolor="white",
+        markeredgewidth=1.5,
+        color="#404040",
+        label=i18n("Target"),
+    )
+
+    revision_symbol = mpatches.FancyArrowPatch(
+        (0, 0),
+        (1, 0),
+        arrowstyle="-|>",
+        mutation_scale=20,
+        linewidth=2.2,
+        color="#202020",
+    )
+
+    realised_symbol = mlines.Line2D(
+        [],
+        [],
+        color="#404040",
+        linewidth=3.8,
+        linestyle="-",
+        label=i18n("Realised"),
+    )
+
+    def make_legend_arrow(
+        legend,
+        orig_handle,
+        xdescent,
+        ydescent,
+        width,
+        height,
+        fontsize,
+    ):
+        return mpatches.FancyArrowPatch(
+            (
+                xdescent,
+                ydescent + height / 2,
+            ),
+            (
+                xdescent + width,
+                ydescent + height / 2,
+            ),
+            arrowstyle="-|>",
+            mutation_scale=fontsize * 1.2,
+            linewidth=2.2,
+            color="#202020",
+        )
+
+    # Left legend: symbol meaning
+    symbol_legend = ax.legend(
+        handles=[
+            target_symbol,
+            revision_symbol,
+            realised_symbol,
+        ],
+        labels=[
+            i18n("Target"),
+            i18n("Revised target"),
+            i18n("Realised"),
+        ],
+        handler_map={
+            mpatches.FancyArrowPatch: HandlerPatch(patch_func=make_legend_arrow)
+        },
+        ncol=1,
         frameon=False,
-        fontsize=9,
-        ncol=3,
-        columnspacing=1.6,
-        handletextpad=0.8,
         loc="upper left",
-        bbox_to_anchor=(0.01, 0.99),
-        prop=FontProperties(family=get_font_family(), size=9),
+        bbox_to_anchor=(0.03, 1.005),
+        borderaxespad=0,
+        handlelength=2.6,
+        handletextpad=0.9,
+        labelspacing=0.75,
+        fontsize=15,
     )
 
-    for text in legend.get_texts():
-        if text.get_text() in [
-            i18n("Primary energy consumption"),
-            i18n("Terminal energy consumption"),
-            i18n("Primary energy generation"),
-            i18n("Symbols"),
-        ]:
-            text.set_fontweight("bold")
+    ax.add_artist(symbol_legend)
 
-    fig.tight_layout()
+    # Right legend: energy source colours
+    coal_square = mlines.Line2D(
+        [],
+        [],
+        marker="s",
+        linestyle="None",
+        markersize=14,
+        markerfacecolor=colors["Coal"],
+        markeredgecolor=colors["Coal"],
+        label=i18n("Coal"),
+    )
+
+    gas_square = mlines.Line2D(
+        [],
+        [],
+        marker="s",
+        linestyle="None",
+        markersize=14,
+        markerfacecolor=colors["Gas"],
+        markeredgecolor=colors["Gas"],
+        label=i18n("Gas"),
+    )
+
+    non_fossil_square = mlines.Line2D(
+        [],
+        [],
+        marker="s",
+        linestyle="None",
+        markersize=14,
+        markerfacecolor=colors["Non-fossil"],
+        markeredgecolor=colors["Non-fossil"],
+        label=i18n("Non-fossil"),
+    )
+
+    ax.legend(
+        handles=[
+            coal_square,
+            gas_square,
+            non_fossil_square,
+        ],
+        ncol=3,
+        frameon=False,
+        loc="upper left",
+        bbox_to_anchor=(0.42, 1.005),
+        borderaxespad=0,
+        handlelength=1.1,
+        handletextpad=0.7,
+        columnspacing=1.8,
+        fontsize=15,
+    )
+
+    plt.tight_layout()
+
     return fig
 
 

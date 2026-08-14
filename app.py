@@ -156,7 +156,7 @@ def server(input, output, session):
                 ),
                 ui.div(
                     ui.p(
-                        i18n("Note: Installed capacity refers to the total power output of all power generation units at rated conditions.")
+                        i18n("Note: Installed capacity refers to the total power output of all power generation units at rated conditions. Coal- and gas-fired capacity targets are combined as a thermal power target for comparison with realised data.")
                     ),
                     ui.p(
                         i18n("Source: Target data is from the Target Tracker; the realized data is from the National Energy Administration and China Electricity Council.")

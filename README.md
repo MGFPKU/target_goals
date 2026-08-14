@@ -35,8 +35,8 @@ Each tab corresponds to a self-contained `Visualisation_*.py` script. All data i
 
 | Tab                      | Script                                                  |
 | ------------------------ | ------------------------------------------------------- |
-| Carbon intensity         | `Visualisation_Carbon and Energy Intensity.py`          |
-| Energy intensity         | `Visualisation_Carbon and Energy Intensity.py`          |
+| Carbon intensity         | `Visualisation_Annual Carbon Intensity Reductions.py`   |
+| Energy intensity         | `Visualisation_Annual Energy Intensity Reductions.py`   |
 | Energy mix shares        | `Visualisation_Energy Shares.py`                       |
 | Installed capacity       | `Visualisation_Installed Capacity.py`                  |
 | Forest stock volume      | `Visualisation_Forest coverage rate and stock volume.py`|

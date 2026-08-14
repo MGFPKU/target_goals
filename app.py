@@ -18,13 +18,13 @@ def _load_plot_builder(module_name, script_name, function_name):
 
 
 make_carbon_intensity_plot = _load_plot_builder(
-    "carbon_energy_viz",
-    "Visualisation_Carbon and Energy Intensity.py",
+    "annual_carbon_intensity_viz",
+    "Visualisation_Annual Carbon Intensity Reductions.py",
     "make_carbon_intensity_plot",
 )
 make_energy_intensity_plot = _load_plot_builder(
-    "carbon_energy_viz",
-    "Visualisation_Carbon and Energy Intensity.py",
+    "annual_energy_intensity_viz",
+    "Visualisation_Annual Energy Intensity Reductions.py",
     "make_energy_intensity_plot",
 )
 make_energy_mix_shares_plot = _load_plot_builder(
@@ -184,13 +184,13 @@ def server(input, output, session):
             selected=i18n("Energy intensity"),
         )
 
-    @render.plot(alt=i18n("Carbon intensity targets (for the whole economy)"))
+    @render.plot(alt=i18n("Annual carbon intensity reductions"))
     def carbon_intensity_plot():
         set_language(lang())
         mpl.rcParams["font.family"] = get_font_family()
         return make_carbon_intensity_plot()
 
-    @render.plot(alt=i18n("Energy intensity targets (for the whole economy)"))
+    @render.plot(alt=i18n("Annual energy intensity reductions"))
     def energy_intensity_plot():
         set_language(lang())
         mpl.rcParams["font.family"] = get_font_family()

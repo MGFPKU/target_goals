@@ -17,11 +17,6 @@ def _load_plot_builder(module_name, script_name, function_name):
     return getattr(module, function_name)
 
 
-make_absolute_target_plot = _load_plot_builder(
-    "absolute_target_viz",
-    "Visualisation_Absolute Target.py",
-    "make_absolute_target_plot",
-)
 make_carbon_intensity_plot = _load_plot_builder(
     "carbon_energy_viz",
     "Visualisation_Carbon and Energy Intensity.py",
@@ -138,17 +133,6 @@ def server(input, output, session):
                 ),
             ),
             ui.nav_panel(
-                i18n("Absolute emissions"),
-                ui.div(
-                    ui.output_plot("absolute_target_plot", width="600px", height="460px"),
-                    class_="plot-shell",
-                ),
-                ui.div(
-                    ui.p(i18n("Source: China's 2035 National Determined Contributions.")),
-                    class_="plot-shell",
-                ),
-            ),
-            ui.nav_panel(
                 i18n("Energy mix shares"),
                 ui.div(
                     ui.output_plot("energy_mix_shares_plot", width="100%", height="560px"),
@@ -199,12 +183,6 @@ def server(input, output, session):
             id="tab",
             selected=i18n("Energy intensity"),
         )
-
-    @render.plot(alt=i18n("China's first absolute GHG emissions reduction target"))
-    def absolute_target_plot():
-        set_language(lang())
-        mpl.rcParams["font.family"] = get_font_family()
-        return make_absolute_target_plot()
 
     @render.plot(alt=i18n("Carbon intensity targets (for the whole economy)"))
     def carbon_intensity_plot():

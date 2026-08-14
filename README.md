@@ -1,6 +1,6 @@
 # Target Goals — China's Climate & Energy Policy Targets
 
-A [Shiny for Python](https://shiny.posit.co/py/) web app that visualises China's climate and energy policy targets against realised values. Six interactive matplotlib plots track carbon intensity, energy intensity, absolute emissions, energy mix, installed capacity, and forest stock volume.
+A [Shiny for Python](https://shiny.posit.co/py/) web app that visualises China's climate and energy policy targets against realised values. Five interactive matplotlib plots track carbon intensity, energy intensity, energy mix, installed capacity, and forest stock volume.
 
 ## Dependencies
 
@@ -37,7 +37,6 @@ Each tab corresponds to a self-contained `Visualisation_*.py` script. All data i
 | ------------------------ | ------------------------------------------------------- |
 | Carbon intensity         | `Visualisation_Carbon and Energy Intensity.py`          |
 | Energy intensity         | `Visualisation_Carbon and Energy Intensity.py`          |
-| Absolute emissions       | `Visualisation_Absolute Target.py`                      |
 | Energy mix shares        | `Visualisation_Energy Shares.py`                       |
 | Installed capacity       | `Visualisation_Installed Capacity.py`                  |
 | Forest stock volume      | `Visualisation_Forest coverage rate and stock volume.py`|

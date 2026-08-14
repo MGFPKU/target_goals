@@ -175,9 +175,6 @@ fuel_order = ["Coal", "Gas", "Non-fossil"]
 
 
 def make_energy_mix_shares_plot():
-
-    fig, ax = plt.subplots(figsize=(10, 5.6), constrained_layout=True)
-
     # Align font with the existing project styling
     plt.rcParams.update(
         {
@@ -186,6 +183,8 @@ def make_energy_mix_shares_plot():
             "axes.facecolor": "white",
         }
     )
+
+    fig, ax = plt.subplots(figsize=(10, 5.6), constrained_layout=True)
 
     # --------------------------------------------------------
     # 4. Realised values

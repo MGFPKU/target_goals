@@ -81,7 +81,7 @@ app_ui = ui.page_fluid(
         """
     ),
     ui.output_ui("tabset"),
-    ui.tags.script(src="iframe-height.js"),
+    ui.include_js(Path(__file__).parent / "www" / "iframe-height.js"),
 )
 
 
